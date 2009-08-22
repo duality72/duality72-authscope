@@ -1,0 +1,10 @@
+syntax: glob
+
+*.class
+*.iws
+bin
+build
+dist
+.manager
+.settings
+.DS_Store
