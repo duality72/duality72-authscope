@@ -1,0 +1,10 @@
+body {
+	background-color: black;
+}
+
+.card {
+	background: yellow;
+	margin: 1em;
+	padding: 1em;
+	min-height: 5em;
+}

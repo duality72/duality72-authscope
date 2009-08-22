@@ -1,0 +1,104 @@
+<project basedir="." name="bigvisiblewall" default="test">
+
+    <property name="web.dir" value="${basedir}/web" />
+    <property name="runtime.dir" value="${basedir}/runtime" />
+    <property name="prod.lib.dir" value="${basedir}/lib/prod"/>
+    <property name="test.lib.dir" value="${basedir}/lib/test"/>
+    <property name="scala-src.dir" value="${basedir}/src"/>
+    <property name="scala.test.dir" value="${basedir}/test"/>
+    <property name="dist.dir" value="${basedir}/dist"/>
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="test-reports.dir" value="${build.dir}/reports"/>
+    <property name="compiled.code.dir" value="${build.dir}/compile"/>
+
+    <path id="prod.classpath">
+        <fileset dir="${prod.lib.dir}" includes="*.jar"/>
+    </path>
+
+    <path id="test.classpath">
+        <path refid="prod.classpath"/>
+        <fileset dir="${test.lib.dir}" includes="*.jar"/>
+        <fileset dir="${dist.dir}" includes="*.jar"/>
+    </path>
+
+    <path id="scala.classpath">
+        <pathelement location="${prod.lib.dir}/scala-compiler.jar"/>
+        <pathelement location="${prod.lib.dir}/scala-library.jar"/>
+    </path>
+
+    <taskdef resource="scala/tools/ant/antlib.xml">
+        <classpath refid="scala.classpath"/>
+    </taskdef>
+
+    <macrodef name="compile.and.jar">
+        <attribute name="src"/>
+        <attribute name="dest"/>
+        <attribute name="classpathref"/>
+
+        <sequential>
+            <mkdir dir="${build.dir}/compile"/>
+            <scalac srcdir="@{src}" destdir="${compiled.code.dir}" classpathref="@{classpathref}"/>
+            <jar destfile="@{dest}">
+                <fileset dir="${compiled.code.dir}"/>
+                <fileset dir="@{src}"/>
+            </jar>
+        </sequential>
+    </macrodef>
+
+    <target name="clean">
+        <delete dir="${dist.dir}"/>
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="build" depends="clean">
+        <mkdir dir="${dist.dir}"/>
+        <compile.and.jar src="${scala-src.dir}" classpathref="prod.classpath"
+                         dest="${dist.dir}/bigvisiblewall-scala.jar"/>
+    </target>
+
+    <target name="dist" depends="test" description="Creates a ZIP containing the build code and all dependencies">
+        <zip destfile="${dist.dir}/bigvisiblewall-alldeps.zip">
+            <fileset dir="${dist.dir}" includes="*.jar"/>
+            <fileset dir="${prod.lib.dir}" includes="*.jar"/>
+            <zipfileset dir="${web.dir}" prefix="web"/>
+            <fileset dir="${runtime.dir}" />
+        </zip>
+    </target>
+
+    <target name="test" depends="build" description="Runs all tests">
+        <compile.and.jar src="${scala.test.dir}" classpathref="test.classpath"
+                         dest="${dist.dir}/scala-test.jar"/>
+
+        <taskdef name="junit"
+                 classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask"/>
+
+        <mkdir dir="${test-reports.dir}"/>
+        <junit haltonfailure="true" showoutput="true">
+            <classpath refid="test.classpath"/>
+            <formatter type="xml"/>
+            <formatter type="brief" usefile="false"/>
+            <batchtest fork="yes" todir="${test-reports.dir}">
+                <fileset dir="${compiled.code.dir}">
+                    <include name="**/*Tests.class"/>
+                    <exclude name="**/All*Test.class"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="tc" description="Runs the tests, commiting the changes to the local mercurial repo" depends="test">
+        <exec executable="hg" outputproperty="pending-changes">
+            <arg value="st"/>
+        </exec>
+
+        <echo>Pending Changes: ${pending-changes}</echo>
+
+        <input message="Enter a commit message..." addproperty="commit-message"/>
+        <echo>Commiting ${commit-message}</echo>
+
+        <exec executable="hg">
+            <arg value="commit"/>
+            <arg value="-m ${commit-message}"/>
+        </exec>
+    </target>
+</project>
