@@ -21,7 +21,7 @@ import scala.xml.Node
 
 class BuildWall(val client: WebClient) {
 
-   def render(ccTrayUrl: String, prefixes: Seq[String]) : Node = {
+   def render(ccTrayUrl: String, prefixes: Seq[String], collapseLevel: Option[Int]) : Node = {
      val feedParser = new CcTrayFeedParser()
 
      var builds = feedParser.parse(client.getAsXml(ccTrayUrl)) map toBuild
@@ -36,7 +36,7 @@ class BuildWall(val client: WebClient) {
        builds = filteredBuids.toList
      }
 
-     return new BuildList(builds, None).asHtml
+     return new BuildList(builds, collapseLevel).asHtml
    }
 
   private def toBuild(data: Tuple3[String, BuildStatus, String]) = new Build(data._1, data._2, data._3)

@@ -62,7 +62,7 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
           //TODO pull URL from query string
           val ccTrayUrl = URLDecoder.decode(new QueryString(queryString).get("source"))
           val projectPrefixes = new QueryString(queryString).getAllOrElse("prefix", List())
-          ok(response, new HtmlPage()("/static/buildwall.css", new BuildWall(webClient).render(ccTrayUrl, projectPrefixes)))
+          ok(response, new HtmlPage()("/static/buildwall.css", new BuildWall(webClient).render(ccTrayUrl, projectPrefixes, None)))
       } else {
           notFound(response, <h1>Not Found</h1>)
       }
