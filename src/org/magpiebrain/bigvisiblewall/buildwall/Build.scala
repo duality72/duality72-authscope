@@ -15,7 +15,7 @@
  */
 package org.magpiebrain.bigvisiblewall.buildwall
 
-class Build(val name: String, val status: BuildStatus, val urlToBuild: String) {
+class Build(val name: String, val status: BuildStatus, val urlToBuild: Option[String]) {
 
   override def toString(): String = {
     return "Name:" + name + " Status:" + status + " URL:" + urlToBuild

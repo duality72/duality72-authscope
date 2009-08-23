@@ -28,12 +28,20 @@ class BuildFactoryTests extends Specification with JUnit {
     "Create a single build" in {
       val factory = new BuildFactory()
       val data = List(("Project", FAILED, "http://url"))
-      factory.make(data).head must beEqualTo(new Build("Project", FAILED, "http://url"))
+      factory.make(data).head must beEqualTo(new Build("Project", FAILED, Some("http://url")))
     }
 
+
+//    "Create a build with one level of substeps" {
+//      val factory = new BuildFactory(1)
+//      val data = List(
+//        ("Project :: Step 1", FAILED, "http://url/1"),
+//        ("Project :: Step 2", PASSED, "http://url/2")
+//      )
 //
-//    "Create a build with multiple steps" {
-//      val factory = new BuildFactory()
+//      val build = factory.make(data)
+//
+//
 //
 //    }
 //

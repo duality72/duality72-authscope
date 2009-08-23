@@ -31,7 +31,7 @@ class BuildListTests extends Specification with JUnit {
           </li>
         </ul>
 
-      val build = new Build("My Super Project", PASSED, "http://mybuild")
+      val build = new Build("My Super Project", PASSED, Some("http://mybuild"))
       val buildList = new BuildList(List(build))
       buildList.asHtml must equalIgnoreSpace(expectedHtml)
     }
@@ -44,7 +44,7 @@ class BuildListTests extends Specification with JUnit {
           </li>
         </ul>
 
-      val build = new Build("My Super Project", FAILED, "http://mybuild")
+      val build = new Build("My Super Project", FAILED, Some("http://mybuild"))
       val buildList = new BuildList(List(build))
       buildList.asHtml must equalIgnoreSpace(expectedHtml)
     }
@@ -57,7 +57,7 @@ class BuildListTests extends Specification with JUnit {
           </li>
         </ul>
 
-      val build = new Build("My Super Project", UNKNOWN, "http://mybuild")
+      val build = new Build("My Super Project", UNKNOWN, Some("http://mybuild"))
       val buildList = new BuildList(List(build))
       buildList.asHtml must equalIgnoreSpace(expectedHtml)
     }

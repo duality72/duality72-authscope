@@ -24,6 +24,6 @@ class BuildFactory {
     return data map toBuild
   }
 
-  private def toBuild(data: Tuple3[String, BuildStatus, String]) = new Build(data._1, data._2, data._3)
+  private def toBuild(data: Tuple3[String, BuildStatus, String]) = new Build(data._1, data._2, Some(data._3))
 
 }

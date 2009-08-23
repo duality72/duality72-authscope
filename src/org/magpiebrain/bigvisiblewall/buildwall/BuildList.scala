@@ -29,8 +29,9 @@ class BuildList(val builds: List[Build]) {
   }
 
   private def asHtml(build: Build) = {
+    //TODO: Should deal more elegantly with the optionality with the URL
     <li class={ "build " + build.status.name.toLowerCase}>
-      <a class="project" href={ build.urlToBuild }>{ build.name }</a>
+      <a class="project" href={ build.urlToBuild.getOrElse("") }>{ build.name }</a>
     </li>
   }
 
