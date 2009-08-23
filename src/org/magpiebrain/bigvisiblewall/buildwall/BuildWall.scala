@@ -24,7 +24,8 @@ class BuildWall(val client: WebClient) {
    def render(ccTrayUrl: String, prefixes: Seq[String], collapseLevel: Option[Int]) : Node = {
      val feedParser = new CcTrayFeedParser()
 
-     var builds = feedParser.parse(client.getAsXml(ccTrayUrl)) map toBuild
+     //TODO: Pass the build factory in rather than the collapse level
+     var builds = new BuildFactory().make(feedParser.parse(client.getAsXml(ccTrayUrl)))
 
      builds = builds.sort((b1, b2) => (b1.name compareTo b2.name) < 0)
 
@@ -36,9 +37,7 @@ class BuildWall(val client: WebClient) {
        builds = filteredBuids.toList
      }
 
-     return new BuildList(builds, collapseLevel).asHtml
+     return new BuildList(builds).asHtml
    }
 
-  private def toBuild(data: Tuple3[String, BuildStatus, String]) = new Build(data._1, data._2, data._3)
-  
 }

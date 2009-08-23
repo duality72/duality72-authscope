@@ -32,7 +32,7 @@ class BuildListTests extends Specification with JUnit {
         </ul>
 
       val build = new Build("My Super Project", PASSED, "http://mybuild")
-      val buildList = new BuildList(List(build), None)
+      val buildList = new BuildList(List(build))
       buildList.asHtml must equalIgnoreSpace(expectedHtml)
     }
 
@@ -45,7 +45,7 @@ class BuildListTests extends Specification with JUnit {
         </ul>
 
       val build = new Build("My Super Project", FAILED, "http://mybuild")
-      val buildList = new BuildList(List(build), None)
+      val buildList = new BuildList(List(build))
       buildList.asHtml must equalIgnoreSpace(expectedHtml)
     }
     
@@ -58,9 +58,29 @@ class BuildListTests extends Specification with JUnit {
         </ul>
 
       val build = new Build("My Super Project", UNKNOWN, "http://mybuild")
-      val buildList = new BuildList(List(build), None)
+      val buildList = new BuildList(List(build))
       buildList.asHtml must equalIgnoreSpace(expectedHtml)
     }
+
+//    //TODO This logic should be outside of the HTML rendering - need a model for the builds
+//    "Display a build as failed if any builds collapsed inside it have faied" in {
+//      val expectedHtml =
+//        <ul class="builds">
+//          <li class="build failed">
+//            <span class="project">My Project</span>
+//            <ul class="steps">
+//              <li class="build failed"><a class="project" href="http://mybuild/1">Build Step 1</a></li>
+//              <li class="build passed"><a class="project" href="http://mybuild/2">Build Step 2</a></li>
+//            </ul>
+//          </li>
+//        </ul>
+//
+//      val firstStep = new Build("My Project :: Build Step 1", UNKNOWN, "http://mybuild/1")
+//      val secondStep = new Build("My Project :: Build Step 2", UNKNOWN, "http://mybuild/2")
+//
+//      val buildList = new BuildList(List(firstStep, secondStep))
+//    }
+
 
   }
 }
