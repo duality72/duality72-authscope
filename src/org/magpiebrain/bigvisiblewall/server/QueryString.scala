@@ -26,6 +26,13 @@ class QueryString(val underlyingString: String) {
     return map(paramName)(0)
   }
 
+  def getIntAsOption(paramName: String): Option[Int] = {
+    if (map.isDefinedAt(paramName)) {
+      return Some(get(paramName).toInt)
+    }
+    return None
+  }
+
   def getAllOrElse(paramName: String, default: List[String]): List[String] = {
     if (map.isDefinedAt(paramName)) {
       return List() ++ map(paramName)

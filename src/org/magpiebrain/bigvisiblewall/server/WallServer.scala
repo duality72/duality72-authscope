@@ -49,20 +49,23 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
   }
 
   //TODO pull different URL handlers into seperate classes
-  private def handleUrl(target : String, queryString : String, response : HttpServletResponse) {
+  private def handleUrl(target : String, queryStringAsString : String, response : HttpServletResponse) {
     try {
+      val queryString = new QueryString(queryStringAsString)
+
       if (target.equals("/")) {
           //TODO Pull out Int from query string...
-          val limit = new QueryString(queryString).getOrElse("limit", "4")
+          val limit = queryString.getOrElse("limit", "4")
           ok(response, new CardList(projectRepository.cards.slice(0, limit.toInt)).asHtml)
       } else if (target.startsWith("/static/")) {
         val staticFilename = target.drop(8)
         okString(response, new StaticFile(staticFileDir, staticFilename).contents)
       } else if (target.equals("/buildWall")) {
           //TODO pull URL from query string
-          val ccTrayUrl = URLDecoder.decode(new QueryString(queryString).get("source"))
-          val projectPrefixes = new QueryString(queryString).getAllOrElse("prefix", List())
-          ok(response, new HtmlPage()("/static/buildwall.css", new BuildWall(webClient).render(ccTrayUrl, projectPrefixes, None)))
+          val ccTrayUrl = URLDecoder.decode(queryString.get("source"))
+          val projectPrefixes = queryString.getAllOrElse("prefix", List())
+          val collapseLevel = queryString.getIntAsOption("collapseLevel")
+          ok(response, new HtmlPage()("/static/buildwall.css", new BuildWall(webClient).render(ccTrayUrl, projectPrefixes, collapseLevel)))
       } else {
           notFound(response, <h1>Not Found</h1>)
       }
