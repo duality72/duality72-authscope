@@ -36,7 +36,7 @@ class BuildWall(val client: WebClient) {
        builds = filteredBuids.toList
      }
 
-     return new BuildList(builds).asHtml
+     return new BuildList(builds, None).asHtml
    }
 
   private def toBuild(data: Tuple3[String, BuildStatus, String]) = new Build(data._1, data._2, data._3)

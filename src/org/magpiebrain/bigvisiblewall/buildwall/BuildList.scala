@@ -20,9 +20,11 @@ import scala.xml.Node
 
 /**
  * HTML representation of a list of builds
+ *
+ * TODO Need to pull out a model to represent the builds rather than stuffing all the prefix logic etc here
  */
 
-class BuildList(val builds: List[Build]) {
+class BuildList(val builds: List[Build], val collapseLevel: Option[Int]) {
 
   def asHtml(): Node = {
     return <ul class="builds">{ builds.map(build => asHtml(build)) }</ul>
