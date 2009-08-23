@@ -24,7 +24,7 @@ class BuildWall(val client: WebClient) {
    def render(ccTrayUrl: String, prefixes: Seq[String]) : Node = {
      val feedParser = new CcTrayFeedParser()
 
-     var builds = feedParser.parse(client.getAsXml(ccTrayUrl))
+     var builds = feedParser.parse(client.getAsXml(ccTrayUrl)) map toBuild
 
      builds = builds.sort((b1, b2) => (b1.name compareTo b2.name) < 0)
 
@@ -38,5 +38,7 @@ class BuildWall(val client: WebClient) {
 
      return new BuildList(builds).asHtml
    }
+
+  private def toBuild(data: Tuple3[String, BuildStatus, String]) = new Build(data._1, data._2, data._3)
   
 }

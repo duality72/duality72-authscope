@@ -32,15 +32,10 @@ class CcTrayFeedParserTests extends Specification with JUnit {
         </Projects>
 
       val builds = new CcTrayFeedParser().parse(exampleXml)
-
-      builds must haveSize (1)
-      val build = builds.head
-      build.name must equalTo("My Super Project")
-      build.status must equalTo(PASSED)
-      build.urlToBuild must equalTo("http://mysuperbuildmachine")
+      builds must containInOrder( List(("My Super Project", PASSED, "http://mysuperbuildmachine")) )
     }
 
-    "Parse single passing build" in {
+    "Parse single failing build" in {
       val exampleXml =
         <Projects>
           <Project name="My Super Project" activity="Sleeping"
@@ -49,12 +44,7 @@ class CcTrayFeedParserTests extends Specification with JUnit {
         </Projects>
 
       val builds = new CcTrayFeedParser().parse(exampleXml)
-
-      builds must haveSize (1)
-      val build = builds.head
-      build.name must equalTo("My Super Project")
-      build.status must equalTo(FAILED)
-      build.urlToBuild must equalTo("http://mysuperbuildmachine")
+      builds must containInOrder( List(("My Super Project", FAILED, "http://mysuperbuildmachine")) )
     }
 
     "Parse multiple builds for multiple projects" in {
@@ -70,19 +60,12 @@ class CcTrayFeedParserTests extends Specification with JUnit {
 
       val builds = new CcTrayFeedParser().parse(exampleXml)
 
-      builds must haveSize (2)
-
-      val project1Build = builds(0)
-      project1Build.name must equalTo("Project 1")
-      project1Build.status must equalTo(FAILED)
-      project1Build.urlToBuild must equalTo("http://mysuperbuildmachine/1")
-
-      val project2Build = builds(1)
-      project2Build.name must equalTo("Project 2")
-      project2Build.status must equalTo(PASSED)
-      project2Build.urlToBuild must equalTo("http://mysuperbuildmachine/2")
-    }
-
+      builds must containInOrder(
+        List(
+          ("Project 1", FAILED, "http://mysuperbuildmachine/1"),
+          ("Project 2", PASSED, "http://mysuperbuildmachine/2") )
+        )
+     }
   }
 
 }
