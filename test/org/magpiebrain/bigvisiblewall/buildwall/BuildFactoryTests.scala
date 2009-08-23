@@ -15,19 +15,32 @@
  */
 package org.magpiebrain.bigvisiblewall.buildwall
 
-class Build(val name: String, val status: BuildStatus, val urlToBuild: String) {
 
-  override def toString(): String = {
-    return "Name:" + name + " Status:" + status + " URL:" + urlToBuild
+import specs.runner.JUnit
+import specs.Specification
+
+/**
+ * @author Sam Newman (sam.newman@gmail.com)
+ */
+class BuildFactoryTests extends Specification with JUnit {
+
+  "Build Factory" should {
+    "Create a single build" in {
+      val factory = new BuildFactory()
+      val data = List(("Project", FAILED, "http://url"))
+      factory.make(data).head must beEqualTo(new Build("Project", FAILED, "http://url"))
+    }
+
+//
+//    "Create a build with multiple steps" {
+//      val factory = new BuildFactory()
+//
+//    }
+//
+//    "Create a build with a deep tree of steps" {
+//      val factory = new BuildFactory()
+//
+//    }
   }
-
-  override def equals(other : Any) : Boolean = other match {
-    case that : Build => (
-      this.name == that.name &&
-      this.status == that.status &&
-      this.urlToBuild == that.urlToBuild
-    )
-    case _ => false
-  }
-
+  
 }
