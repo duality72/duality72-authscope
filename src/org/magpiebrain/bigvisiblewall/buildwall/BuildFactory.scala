@@ -1,5 +1,5 @@
 /*
- * Copyright ${year} Sam Newman
+ * Copyright 2009 Sam Newman
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -12,13 +12,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License
- */package org.magpiebrain.bigvisiblewall.buildwall
+ */
+
+package org.magpiebrain.bigvisiblewall.buildwall
 
 /**
  * @author Sam Newman (sam.newman@gmail.com)
  */
 
-class BuildFactory {
+class BuildFactory(val collapseLevel: Option[Int]) {
 
   def make(data: List[Tuple3[String, BuildStatus, String]]): List[Build] = {
     return data map toBuild
