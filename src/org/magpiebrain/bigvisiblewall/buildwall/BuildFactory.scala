@@ -16,6 +16,9 @@
 
 package org.magpiebrain.bigvisiblewall.buildwall
 
+
+import collection.mutable.HashMap
+
 /**
  * @author Sam Newman (sam.newman@gmail.com)
  */
@@ -23,7 +26,37 @@ package org.magpiebrain.bigvisiblewall.buildwall
 class BuildFactory(val collapseLevel: Option[Int]) {
 
   def make(data: List[Tuple3[String, BuildStatus, String]]): List[Build] = {
-    return data map toBuild
+    val builds = new HashMap[String, Build]()
+
+    if (collapseLevel.isDefined) {
+      for (entry <- data) {
+        val buildName = entry._1
+        val stepStatus = entry._2
+        val partsOfName = buildName.split(" :: ", 2)
+        val parentName = partsOfName(0)
+        val step = new Build(partsOfName(1), stepStatus, Some(entry._3))
+
+        if (!builds.isDefinedAt(parentName)) {
+          val build = new Build(parentName, UNKNOWN, None)
+          build.addStep(step)
+          builds.put(parentName, build)
+        } else {
+          builds(parentName).addStep(step)
+        }
+
+        if (step.status == FAILED) {
+          builds(parentName).status = FAILED
+        } else if (step.status == UNKNOWN && builds(parentName).status != FAILED) {
+          builds(parentName).status = UNKNOWN
+        } else if (builds(parentName).status != FAILED && builds(parentName).status != UNKNOWN) {
+          builds(parentName).status = PASSED
+        }
+        
+      }
+      return builds.values.toList
+    } else {
+      return data map toBuild
+    }
   }
 
   private def toBuild(data: Tuple3[String, BuildStatus, String]) = new Build(data._1, data._2, Some(data._3))

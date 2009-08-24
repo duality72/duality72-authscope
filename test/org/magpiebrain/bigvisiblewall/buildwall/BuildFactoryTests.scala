@@ -47,7 +47,6 @@ class BuildFactoryTests extends Specification with JUnit {
     }
 
     "Create a build with one level of substeps" in {
-      skip("Not working yet")
       val factory = new BuildFactory(Some(1))
       val data = List(
         ("Project :: Step 1", FAILED, "http://url/1"),
@@ -56,14 +55,16 @@ class BuildFactoryTests extends Specification with JUnit {
 
       val build = factory.make(data).head
 
+      build.name must equalTo("Project")
+      build.urlToBuild must equalTo(None)
+
       build.steps must containInOrder (List(
         new Build("Step 1", FAILED, Some("http://url/1")),
         new Build("Step 2", PASSED, Some("http://url/2"))
       ))
 
-      build.name must equalTo("Project")
       build.status must equalTo(FAILED)
-      build.urlToBuild must equalTo(None)
+
     }
 //
 //    "Create a build with a deep tree of steps" {

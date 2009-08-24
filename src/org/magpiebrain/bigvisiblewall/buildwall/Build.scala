@@ -15,9 +15,18 @@
  */
 package org.magpiebrain.bigvisiblewall.buildwall
 
-class Build(val name: String, val status: BuildStatus, val urlToBuild: Option[String]) {
 
-  def steps: List[Build] = List()
+import collection.mutable.ArrayBuffer
+
+class Build(val name: String, var status: BuildStatus, val urlToBuild: Option[String]) {
+
+  var steps = new ArrayBuffer[Build]
+
+  def getSteps: List[Build] = steps.toList
+
+  def addStep(build: Build) {
+    steps += build
+  }
 
   override def toString(): String = {
     return "Name:" + name + " Status:" + status + " URL:" + urlToBuild
