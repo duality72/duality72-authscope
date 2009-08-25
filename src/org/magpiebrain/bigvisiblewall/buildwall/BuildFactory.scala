@@ -32,9 +32,12 @@ class BuildFactory(val collapseLevel: Option[Int]) {
       for (entry <- data) {
         val buildName = entry._1
         val stepStatus = entry._2
-        val partsOfName = buildName.split(" :: ", 2)
-        val parentName = partsOfName(0)
-        val step = new Build(partsOfName(1), stepStatus, Some(entry._3))
+
+        //We collapse from the bottom up - so A :: B :: C becomes A :: B, with a child of C with a one-level collapse
+        val partsOfName = buildName.reverse.split(" :: ", 2)
+        val parentName = partsOfName(1).reverse
+        val stepName = partsOfName(0).reverse
+        val step = new Build(stepName, stepStatus, Some(entry._3))
 
         if (!builds.isDefinedAt(parentName)) {
           val build = new Build(parentName, UNKNOWN, None)

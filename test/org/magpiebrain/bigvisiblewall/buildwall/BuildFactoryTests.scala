@@ -49,13 +49,13 @@ class BuildFactoryTests extends Specification with JUnit {
     "Create a build with one level of substeps" in {
       val factory = new BuildFactory(Some(1))
       val data = List(
-        ("Project :: Step 1", FAILED, "http://url/1"),
-        ("Project :: Step 2", PASSED, "http://url/2")
+        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/1"),
+        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/2")
       )
 
       val build = factory.make(data).head
 
-      build.name must equalTo("Project")
+      build.name must equalTo("Project :: Stage 1")
       build.urlToBuild must equalTo(None)
 
       build.steps must containInOrder (List(
@@ -64,13 +64,28 @@ class BuildFactoryTests extends Specification with JUnit {
       ))
 
       build.status must equalTo(FAILED)
-
     }
+
+//    "Create a build with two levels of substeps" in {
+//      val factory = new BuildFactory(Some(1))
+//      val data = List(
+//        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/1"),
+//        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/2")
+//      )
 //
-//    "Create a build with a deep tree of steps" {
-//      val factory = new BuildFactory()
+//      val build = factory.make(data).head
 //
+//      build.name must equalTo("Project :: Stage 1")
+//      build.urlToBuild must equalTo(None)
+//
+//      build.steps must containInOrder (List(
+//        new Build("Step 1", FAILED, Some("http://url/1")),
+//        new Build("Step 2", PASSED, Some("http://url/2"))
+//      ))
+//
+//      build.status must equalTo(FAILED)
 //    }
+
   }
   
 }
