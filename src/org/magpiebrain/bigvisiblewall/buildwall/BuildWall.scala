@@ -21,11 +21,11 @@ import scala.xml.Node
 
 class BuildWall(val client: WebClient) {
 
-   def render(ccTrayUrl: String, prefixes: Seq[String], collapseLevel: Option[Int]) : Node = {
+   def render(ccTrayUrl: String, prefixes: Seq[String], buildFactory: BuildFactory) : Node = {
      val feedParser = new CcTrayFeedParser()
 
      //TODO: Pass the build factory in rather than the collapse level
-     var builds = new BuildFactory(None).make(feedParser.parse(client.getAsXml(ccTrayUrl)))
+     var builds = buildFactory.make(feedParser.parse(client.getAsXml(ccTrayUrl)))
 
      builds = builds.sort((b1, b2) => (b1.name compareTo b2.name) < 0)
 
