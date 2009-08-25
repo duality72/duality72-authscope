@@ -66,25 +66,31 @@ class BuildFactoryTests extends Specification with JUnit {
       build.status must equalTo(FAILED)
     }
 
-//    "Create a build with two levels of substeps" in {
-//      val factory = new BuildFactory(Some(1))
-//      val data = List(
-//        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/1"),
-//        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/2")
-//      )
-//
-//      val build = factory.make(data).head
-//
-//      build.name must equalTo("Project :: Stage 1")
-//      build.urlToBuild must equalTo(None)
-//
-//      build.steps must containInOrder (List(
-//        new Build("Step 1", FAILED, Some("http://url/1")),
-//        new Build("Step 2", PASSED, Some("http://url/2"))
-//      ))
-//
-//      build.status must equalTo(FAILED)
-//    }
+    "Create a build with two levels of substeps" in {
+      skip("Not implemented yet")
+      val factory = new BuildFactory(Some(2))
+      val data = List(
+        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/1"),
+        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/2")
+      )
+
+      val build = factory.make(data).head
+
+      build.name must equalTo("Project")
+      build.urlToBuild must equalTo(None)
+      build.status must equalTo(FAILED)
+      
+      val step = build.steps(0)
+      step.name must equalTo("Stage 1")
+      step.urlToBuild must equalTo(None)
+      build.status must equalTo(FAILED)
+
+      step.steps must containInOrder (List(
+        new Build("Step 1", FAILED, Some("http://url/1")),
+        new Build("Step 2", PASSED, Some("http://url/2"))
+      ))
+
+    }
 
   }
   
