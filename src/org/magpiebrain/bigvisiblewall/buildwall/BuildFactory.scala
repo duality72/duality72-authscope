@@ -40,7 +40,7 @@ class BuildFactory(val collapseLevel: Option[Int]) {
         val step = new Build(stepName, stepStatus, Some(entry._3))
 
         if (!builds.isDefinedAt(parentName)) {
-          val build = new Build(parentName, UNKNOWN, None)
+          val build = new Build(parentName, PASSED, None)
           build.addStep(step)
           builds.put(parentName, build)
         } else {
