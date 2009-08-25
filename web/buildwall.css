@@ -24,6 +24,10 @@ li.build {
 	-moz-border-radius: 7px;	
 }
 
+ul.steps {
+    display: none;
+}
+
 li.build:hover {
     text-decoration: underline;
 }

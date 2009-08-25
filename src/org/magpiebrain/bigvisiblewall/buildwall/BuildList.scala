@@ -16,7 +16,7 @@
 package org.magpiebrain.bigvisiblewall.buildwall
 
 
-import scala.xml.Node
+import scala.xml.{Elem, Node}
 
 /**
  * HTML representation of a list of builds
@@ -25,14 +25,29 @@ import scala.xml.Node
 class BuildList(val builds: List[Build]) {
 
   def asHtml(): Node = {
-    return <ul class="builds">{ builds.map(build => asHtml(build)) }</ul>
+    return <ul class="builds">{ builds.map(build => buildToHtml(build)) }</ul>
   }
 
-  private def asHtml(build: Build) = {
+  private def buildToHtml(build: Build) = {
     //TODO: Should deal more elegantly with the optionality with the URL
+    var buildLink = <a class="project" href={ build.urlToBuild.getOrElse("") }>{ build.name }</a>
+    if (!build.urlToBuild.isDefined) {
+      buildLink = <span class="project">{ build.name }</span>
+    }
+
     <li class={ "build " + build.status.name.toLowerCase}>
-      <a class="project" href={ build.urlToBuild.getOrElse("") }>{ build.name }</a>
+      { buildLink }
+      { stepsToHtml(build.steps) }
     </li>
+  }
+
+  private def stepsToHtml(steps: Seq[Build]) : Elem = {
+    if (!steps.isEmpty) {
+      return <ul class="steps">
+          { steps.map(build => buildToHtml(build)) }
+        </ul>
+    }
+    return null
   }
 
 }
