@@ -75,8 +75,8 @@ class BuildListTests extends Specification with JUnit {
         </ul>
 
       val build = new Build("My Project :: Build", FAILED, None)
-      build.addStep(new Build("Step 1", FAILED, Some("http://mybuild/1")))
-      build.addStep(new Build("Step 2", PASSED, Some("http://mybuild/2")))
+      build.addChild(new Build("Step 1", FAILED, Some("http://mybuild/1")))
+      build.addChild(new Build("Step 2", PASSED, Some("http://mybuild/2")))
 
       val buildList = new BuildList(List(build))
       buildList.asHtml must equalIgnoreSpace(expectedHtml) 

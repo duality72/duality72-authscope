@@ -41,10 +41,10 @@ class SimpleBuildFactory(val collapseLevel: Option[Int]) extends BuildFactory {
 
         if (!builds.isDefinedAt(parentName)) {
           val build = new Build(parentName, PASSED, None)
-          build.addStep(step)
+          build.addChild(step)
           builds.put(parentName, build)
         } else {
-          builds(parentName).addStep(step)
+          builds(parentName).addChild(step)
         }
 
         if (step.status == FAILED) {

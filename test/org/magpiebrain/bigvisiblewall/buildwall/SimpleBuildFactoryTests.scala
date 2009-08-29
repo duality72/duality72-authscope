@@ -58,7 +58,7 @@ class SimpleBuildFactoryTests extends Specification with JUnit {
       build.name must equalTo("Project :: Stage 1")
       build.urlToBuild must equalTo(None)
 
-      build.steps must containInOrder (List(
+      build.children must containInOrder (List(
         new Build("Step 1", FAILED, Some("http://url/1")),
         new Build("Step 2", PASSED, Some("http://url/2"))
       ))
@@ -80,12 +80,12 @@ class SimpleBuildFactoryTests extends Specification with JUnit {
       build.urlToBuild must equalTo(None)
       build.status must equalTo(FAILED)
       
-      val step = build.steps(0)
+      val step = build.getChildren(0)
       step.name must equalTo("Stage 1")
       step.urlToBuild must equalTo(None)
       build.status must equalTo(FAILED)
 
-      step.steps must containInOrder (List(
+      step.children must containInOrder (List(
         new Build("Step 1", FAILED, Some("http://url/1")),
         new Build("Step 2", PASSED, Some("http://url/2"))
       ))

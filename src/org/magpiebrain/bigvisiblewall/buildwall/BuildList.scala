@@ -37,7 +37,7 @@ class BuildList(val builds: List[Build]) {
 
     <li class={ "build " + build.status.name.toLowerCase}>
       { buildLink }
-      { stepsToHtml(build.steps) }
+      { stepsToHtml(build.children) }
     </li>
   }
 

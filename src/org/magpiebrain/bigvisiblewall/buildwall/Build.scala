@@ -20,12 +20,12 @@ import collection.mutable.ArrayBuffer
 
 class Build(val name: String, var status: BuildStatus, val urlToBuild: Option[String]) {
 
-  var steps = new ArrayBuffer[Build]
+  var children = new ArrayBuffer[Build]
 
-  def getSteps: List[Build] = steps.toList
+  def getChildren: List[Build] = children.toList
 
-  def addStep(build: Build) {
-    steps += build
+  def addChild(build: Build) {
+    children += build
   }
 
   override def toString(): String = {

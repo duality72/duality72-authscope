@@ -34,7 +34,7 @@ class CruiseBuildFactory extends BuildFactory {
       if (isStage(buildName)) {
         builds.put(buildName, new Build(buildName, entry._2, Some(entry._3)))
       } else {
-        builds(stageName(buildName)).addStep(new Build(buildName, entry._2, Some(entry._3)))
+        builds(stageName(buildName)).addChild(new Build(buildName, entry._2, Some(entry._3)))
       }
     }
 
@@ -43,7 +43,7 @@ class CruiseBuildFactory extends BuildFactory {
     val stages = builds.values.toList
     val root = new Build(projectName(stages.head.name), UNKNOWN, None)
 
-    stages.foreach( build => root.addStep(build))
+    stages.foreach( build => root.addChild(build))
     
     return List(root)
   }

@@ -40,12 +40,12 @@ class CruiseBuildFactoryTests extends Specification with JUnit {
       build.urlToBuild must equalTo(None)
       build.status must equalTo(UNKNOWN)
 
-      val stage = build.getSteps.head
+      val stage = build.getChildren.head
       stage.name must equalTo("Project :: Stage 1")
       stage.urlToBuild must equalTo(Some("http://url/stage1"))
       stage.status must equalTo(UNKNOWN)
 
-      stage.steps must containAll (List(
+      stage.children must containAll (List(
         new Build("Project :: Stage 1 :: Step 1", FAILED, Some("http://url/stage1/step1")),
         new Build("Project :: Stage 1 :: Step 2", PASSED, Some("http://url/stage1/step2"))
       ))
