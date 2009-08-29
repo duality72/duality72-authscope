@@ -39,7 +39,7 @@ class BuildWallTests extends Specification with JUnit {
         </Projects>)
 
       val client = new BuildWall(webClient)
-      val buildWallHtml = client.render("SomeUrl", List(), new BuildFactory(None))
+      val buildWallHtml = client.render("SomeUrl", List(), new SimpleBuildFactory(None))
 
       val buildNames = buildNamesInElem(buildWallHtml)
       buildNames must containInOrder(List("A", "B", "C"))
@@ -56,7 +56,7 @@ class BuildWallTests extends Specification with JUnit {
         </Projects>)
 
       val client = new BuildWall(webClient)
-      val buildWallHtml = client.render("SomeUrl", List("Project 1"), new BuildFactory(None))
+      val buildWallHtml = client.render("SomeUrl", List("Project 1"), new SimpleBuildFactory(None))
       
       val buildNames = buildNamesInElem(buildWallHtml)
       buildNames must haveSize(1)
@@ -74,7 +74,7 @@ class BuildWallTests extends Specification with JUnit {
         </Projects>)
 
       val client = new BuildWall(webClient)
-      val buildWallHtml = client.render("SomeUrl", List(), new BuildFactory(None))
+      val buildWallHtml = client.render("SomeUrl", List(), new SimpleBuildFactory(None))
 
       val buildNames = buildNamesInElem(buildWallHtml)
       buildNames must haveSize(2)
@@ -95,7 +95,7 @@ class BuildWallTests extends Specification with JUnit {
         </Projects>)
 
       val client = new BuildWall(webClient)
-      val buildWallHtml = client.render("SomeUrl", List("Project 1", "Project 3"), new BuildFactory(None))
+      val buildWallHtml = client.render("SomeUrl", List("Project 1", "Project 3"), new SimpleBuildFactory(None))
 
       val buildNames = buildNamesInElem(buildWallHtml)
       buildNames must haveSize(2)

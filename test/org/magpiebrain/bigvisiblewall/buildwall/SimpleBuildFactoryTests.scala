@@ -22,17 +22,17 @@ import specs.Specification
 /**
  * @author Sam Newman (sam.newman@gmail.com)
  */
-class BuildFactoryTests extends Specification with JUnit {
+class SimpleBuildFactoryTests extends Specification with JUnit {
 
   "Build Factory" should {
     "Create a single build" in {
-      val factory = new BuildFactory(None)
+      val factory = new SimpleBuildFactory(None)
       val data = List(("Project", FAILED, "http://url"))
       factory.make(data).head must beEqualTo(new Build("Project", FAILED, Some("http://url")))
     }
 
     "Does not fold builds unless specified" in {
-      val factory = new BuildFactory(None)
+      val factory = new SimpleBuildFactory(None)
       val data = List(
        ("Project :: Step 1", FAILED, "http://url/1"),
        ("Project :: Step 2", PASSED, "http://url/2")
@@ -47,7 +47,7 @@ class BuildFactoryTests extends Specification with JUnit {
     }
 
     "Create a build with one level of substeps" in {
-      val factory = new BuildFactory(Some(1))
+      val factory = new SimpleBuildFactory(Some(1))
       val data = List(
         ("Project :: Stage 1 :: Step 1", FAILED, "http://url/1"),
         ("Project :: Stage 1 :: Step 2", PASSED, "http://url/2")
@@ -68,7 +68,7 @@ class BuildFactoryTests extends Specification with JUnit {
 
     "Create a build with two levels of substeps" in {
       skip("Not implemented yet")
-      val factory = new BuildFactory(Some(2))
+      val factory = new SimpleBuildFactory(Some(2))
       val data = List(
         ("Project :: Stage 1 :: Step 1", FAILED, "http://url/1"),
         ("Project :: Stage 1 :: Step 2", PASSED, "http://url/2")

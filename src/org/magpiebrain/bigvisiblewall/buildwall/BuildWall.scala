@@ -21,7 +21,7 @@ import scala.xml.Node
 
 class BuildWall(val client: WebClient) {
 
-   def render(ccTrayUrl: String, prefixes: Seq[String], buildFactory: BuildFactory) : Node = {
+   def render(ccTrayUrl: String, prefixes: Seq[String], buildFactory: SimpleBuildFactory) : Node = {
      val feedParser = new CcTrayFeedParser()
 
      //TODO: Pass the build factory in rather than the collapse level
