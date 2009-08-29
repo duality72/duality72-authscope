@@ -23,7 +23,7 @@ import collection.mutable.HashMap
  * @author Sam Newman (sam.newman@gmail.com)
  */
 
-class SimpleBuildFactory(val collapseLevel: Option[Int]) extends BuildFactory {
+class SimpleBuildFactory extends BuildFactory {
 
   def make(data: List[Tuple3[String, BuildStatus, String]]): List[Build] = {
       return data map toBuild

@@ -26,13 +26,13 @@ class SimpleBuildFactoryTests extends Specification with JUnit {
 
   "Build Factory" should {
     "Create a single build" in {
-      val factory = new SimpleBuildFactory(None)
+      val factory = new SimpleBuildFactory()
       val data = List(("Project", FAILED, "http://url"))
       factory.make(data).head must beEqualTo(new Build("Project", FAILED, Some("http://url")))
     }
 
     "Does not fold builds unless specified" in {
-      val factory = new SimpleBuildFactory(None)
+      val factory = new SimpleBuildFactory()
       val data = List(
        ("Project :: Step 1", FAILED, "http://url/1"),
        ("Project :: Step 2", PASSED, "http://url/2")

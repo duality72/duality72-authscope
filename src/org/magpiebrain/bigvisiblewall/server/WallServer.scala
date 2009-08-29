@@ -64,8 +64,7 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
           //TODO pull URL from query string
           val ccTrayUrl = URLDecoder.decode(queryString.get("source"))
           val projectPrefixes = queryString.getAllOrElse("prefix", List())
-          val collapseLevel = queryString.getIntAsOption("collapseLevel")
-          var buildFactory = new SimpleBuildFactory(collapseLevel)
+          var buildFactory = new SimpleBuildFactory()
           ok(response, new HtmlPage()("/static/buildwall.css", new BuildWall(webClient).render(ccTrayUrl, projectPrefixes, buildFactory)))
       } else {
           notFound(response, <h1>Not Found</h1>)
