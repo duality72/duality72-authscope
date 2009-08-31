@@ -16,7 +16,7 @@
 package org.magpiebrain.bigvisiblewall.server
 
 
-import buildwall.{HtmlPage, BuildWall, SimpleBuildFactory}
+import buildwall._
 import cardwall.repository.{ProjectRepository}
 import cardwall.web.CardList
 import common.WebClient
@@ -66,7 +66,8 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
           val ccTrayUrl = URLDecoder.decode(queryString.get("source"))
           val projectPrefixes = queryString.getAllOrElse("prefix", List())
           var buildFactory = new SimpleBuildFactory()
-          ok(response, new HtmlPage()("/static/buildwall.css", new BuildWall(webClient).render(ccTrayUrl, projectPrefixes, buildFactory)))
+          val buildSource = new CcTrayBuildSource(ccTrayUrl, webClient)
+          ok(response, new HtmlPage()("/static/buildwall.css", new BuildWall().render(buildSource, projectPrefixes, buildFactory)))
       } else {
           notFound(response, <h1>Not Found</h1>)
       }

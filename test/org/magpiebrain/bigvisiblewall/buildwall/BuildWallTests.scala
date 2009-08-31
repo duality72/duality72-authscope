@@ -27,79 +27,66 @@ class BuildWallTests extends Specification with JUnit {
   "Build Wall" should {
 
     "Sort project names alphabetically" in {
-      val webClient = new StubWebClient
-      webClient.serve(
-        <Projects>
-          <Project name="B" activity="Sleeping" lastBuildStatus="Success"
-                   lastBuildLabel="3" lastBuildTime="2009-07-27T15:03:33" webUrl="http://someLocation" />
-          <Project name="A" activity="Sleeping" lastBuildStatus="Success"
-                   lastBuildLabel="3" lastBuildTime="2009-07-27T15:03:33" webUrl="http://someLocation" />
-          <Project name="C" activity="Sleeping" lastBuildStatus="Success"
-                   lastBuildLabel="3" lastBuildTime="2009-07-27T15:03:33" webUrl="http://someLocation" />
-        </Projects>)
+      val buildSource = new BuildSource() {
+        def get : List[Build] = {
+          List(new Build("C", UNKNOWN, None), new Build("A", UNKNOWN, None), new Build("B", UNKNOWN, None))
+        }
+      }
 
-      val client = new BuildWall(webClient)
-      val buildWallHtml = client.render("SomeUrl", List(), new SimpleBuildFactory())
+      val wall = new BuildWall()
+      val buildWallHtml = wall.render(buildSource, List(), new SimpleBuildFactory())
 
       val buildNames = buildNamesInElem(buildWallHtml)
       buildNames must containInOrder(List("A", "B", "C"))
     }
 
     "Filter build results by project name prefix" in {
-      val webClient = new StubWebClient
-      webClient.serve(
-        <Projects>
-          <Project name="Project 1 :: Some Stuff" activity="Sleeping" lastBuildStatus="Success"
-                   lastBuildLabel="3" lastBuildTime="2009-07-27T15:03:33" webUrl="http://someLocation" />
-          <Project name="Project 2 :: Some Other Stuff :: defaultJob" activity="Sleeping" lastBuildStatus="Success"
-                   lastBuildLabel="3" lastBuildTime="2009-07-27T15:03:33" webUrl="http://someLocation" />
-        </Projects>)
+       val buildSource = new BuildSource() {
+        def get : List[Build] = {
+          List(new Build("Project 1 :: Some Stuff", UNKNOWN, None), new Build("Project 2 :: Some Other Stuff", UNKNOWN, None))
+        }
+      }
 
-      val client = new BuildWall(webClient)
-      val buildWallHtml = client.render("SomeUrl", List("Project 1"), new SimpleBuildFactory())
-      
+      val wall = new BuildWall()
+      val buildWallHtml = wall.render(buildSource, List("Project 1"), new SimpleBuildFactory())
+
+
       val buildNames = buildNamesInElem(buildWallHtml)
       buildNames must haveSize(1)
       buildNames(0) must equalTo("Project 1 :: Some Stuff")
     }
 
     "Show all builds when no prefix is specified" in {
-      val webClient = new StubWebClient
-      webClient.serve(
-        <Projects>
-          <Project name="Project 1 :: Some Stuff" activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="3"
-                   lastBuildTime="2009-07-27T15:03:33" webUrl="http://someLocation" />
-          <Project name="Project 2 :: Some Other Stuff :: defaultJob" activity="Sleeping" lastBuildStatus="Success"
-                   lastBuildLabel="3" lastBuildTime="2009-07-27T15:03:33" webUrl="http://someLocation" />
-        </Projects>)
+      val buildSource = new BuildSource() {
+        def get : List[Build] = {
+          List(new Build("Project 1 :: Some Stuff", UNKNOWN, None), new Build("Project 2 :: Some Other Stuff", UNKNOWN, None))
+        }
+      }
 
-      val client = new BuildWall(webClient)
-      val buildWallHtml = client.render("SomeUrl", List(), new SimpleBuildFactory())
+      val wall = new BuildWall()
+      val buildWallHtml = wall.render(buildSource, List(), new SimpleBuildFactory())
 
       val buildNames = buildNamesInElem(buildWallHtml)
       buildNames must haveSize(2)
-      buildNames(0) must equalTo("Project 1 :: Some Stuff")
-      buildNames(1) must equalTo("Project 2 :: Some Other Stuff :: defaultJob")
+      buildNames must haveTheSameElementsAs(List("Project 1 :: Some Stuff", "Project 2 :: Some Other Stuff"))
     }
 
     "Can filter results using multiple prefixes" in {
-      val webClient = new StubWebClient
-      webClient.serve(
-        <Projects>
-          <Project name="Project 1 :: Some Stuff" activity="Sleeping" lastBuildStatus="Success"
-                   lastBuildLabel="3" lastBuildTime="2009-07-27T15:03:33" webUrl="http://someLocation" />
-          <Project name="Project 2 :: Some Other Stuff :: defaultJob" activity="Sleeping" lastBuildStatus="Success"
-                   lastBuildLabel="3" lastBuildTime="2009-07-27T15:03:33" webUrl="http://someLocation" />
-          <Project name="Project 3 :: Some New Stuff" activity="Sleeping" lastBuildStatus="Success"
-                   lastBuildLabel="3" lastBuildTime="2009-07-27T15:03:33" webUrl="http://someLocation" />
-        </Projects>)
+      val buildSource = new BuildSource() {
+        def get : List[Build] = {
+          List(
+            new Build("Project 1 :: Some Stuff", UNKNOWN, None),
+            new Build("Project 2 :: Some Other Stuff", UNKNOWN, None),
+            new Build("Project 3 :: Things", UNKNOWN, None))
+        }
+      }
 
-      val client = new BuildWall(webClient)
-      val buildWallHtml = client.render("SomeUrl", List("Project 1", "Project 3"), new SimpleBuildFactory())
+      val wall = new BuildWall()
+      val buildWallHtml = wall.render(buildSource, List("Project 1", "Project 3"), new SimpleBuildFactory())
 
       val buildNames = buildNamesInElem(buildWallHtml)
       buildNames must haveSize(2)
-      buildNames must haveTheSameElementsAs(List("Project 1 :: Some Stuff", "Project 3 :: Some New Stuff"))
+      buildNames must haveTheSameElementsAs(List("Project 1 :: Some Stuff", "Project 3 :: Things"))
     }
   }
 

@@ -15,25 +15,18 @@
  */
 package org.magpiebrain.bigvisiblewall.buildwall
 
-import collection.mutable.HashSet
+
 import common.WebClient
-import scala.xml.Node
 
-class BuildWall() {
+/**
+ * @author Sam Newman (sam.newman@gmail.com)
+ */
 
-   def render(source: BuildSource, prefixes: Seq[String], buildFactory: BuildFactory) : Node = {
-     var builds = source.get
-     builds = builds.sort((b1, b2) => (b1.name compareTo b2.name) < 0)
+class CcTrayBuildSource(val url: String, val client: WebClient) extends BuildSource {
 
-      if (!prefixes.isEmpty) {
-       var filteredBuids = HashSet[Build]()
-       for (prefix <- prefixes) {
-         filteredBuids ++= builds.filter(_.name.startsWith(prefix))
-       }
-       builds = filteredBuids.toList
-     }
-
-     return new BuildList(builds).asHtml
-   }
+  def get : List[Build] = {
+    val feedParser = new CcTrayFeedParser()
+    return new SimpleBuildFactory().make(feedParser.parse(client.getAsXml(url)))
+  }
 
 }
