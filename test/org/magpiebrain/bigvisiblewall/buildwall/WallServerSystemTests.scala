@@ -91,6 +91,38 @@ class WallServerSystemTests extends Specification with JUnit {
       builds.get(0).getText must equalTo("My Other Project")
       builds.get(1).getText must equalTo("My Super Project")
     }
+    
+    "Display status of a normal and a cruise cctray feed" in {
+      cctraySource.serveHtmlForUrl("/normal",
+        <Projects>
+          <Project name="My Super Project"
+            activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="3"
+            lastBuildTime="2009-07-27T15:03:33" webUrl="http://mybuildmachine/project" />
+        </Projects>
+      )
+
+      cctraySource.serveHtmlForUrl("/cruise",
+        <Projects>
+          <Project name="My Other Project :: Stage 1"
+            activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="3"
+            lastBuildTime="2009-07-27T15:03:33" webUrl="http://mybuildmachine/project" />
+          <Project name="My Other Project :: Stage 1 :: Step 1"
+            activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="3"
+            lastBuildTime="2009-07-27T15:03:33" webUrl="http://mybuildmachine/project" />
+        </Projects>
+      )
+
+      val firstUrl = URLEncoder.encode("http://localhost:6789/normal", "UTF-8")
+      val secondUrl = URLEncoder.encode("http://localhost:6789/cruise", "UTF-8")
+
+      driver.navigate().to("http://localhost:12345/buildWall?source=" + firstUrl + "&cruiseSource=" + secondUrl)
+
+      val builds = driver.findElements(By.className("project"))
+      builds.get(0).getText must equalTo("My Other Project")
+      builds.get(1).getText must equalTo("My Other Project :: Stage 1")
+      builds.get(2).getText must equalTo("My Other Project :: Stage 1 :: Step 1")
+      builds.get(3).getText must equalTo("My Super Project")
+    }
 
     doLast {
       cctraySource.stop

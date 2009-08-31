@@ -63,13 +63,15 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
         okString(response, new StaticFile(staticFileDir, staticFilename).contents)
       } else if (target.equals("/buildWall")) {
           //TODO pull URL from query string
-          val sourceUrls = queryString.getAll("source") map ( url => URLDecoder.decode(url))
+          val sourceUrls = queryString.getAllOrElse("source", List()) map (url => URLDecoder.decode(url))
           val sources = sourceUrls map ( url => new CcTrayBuildSource(url, webClient))
 
-          println("Got " + sources)
+          val cruiseSourceUrls = queryString.getAllOrElse("cruiseSource", List()) map (url => URLDecoder.decode(url))
+          val cruiseSources = cruiseSourceUrls map ( url => new CruiseCcTrayBuildSource(url, webClient))
+
           val projectPrefixes = queryString.getAllOrElse("prefix", List())
           var buildFactory = new SimpleBuildFactory()
-          val html = new BuildWall().render(new CompositeBuildSource(sources), projectPrefixes, buildFactory)
+          val html = new BuildWall().render(new CompositeBuildSource(List() ++ sources ++ cruiseSources), projectPrefixes, buildFactory)
           ok(response, new HtmlPage()("/static/buildwall.css", html))
       } else {
           notFound(response, <h1>Not Found</h1>)
