@@ -30,7 +30,7 @@ import server.WallServer
  * High-level system tests which fire up a fake source of CCTray
  * data and use WebDriver to confirm markup
  */
-class BuildWallSystemTests extends Specification with JUnit {
+class WallServerSystemTests extends Specification with JUnit {
 
   "Build Wall" should {
      val driver = new HtmlUnitDriver {
