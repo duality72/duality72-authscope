@@ -50,6 +50,7 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
 
   //TODO pull different URL handlers into seperate classes
   private def handleUrl(target : String, queryStringAsString : String, response : HttpServletResponse) {
+
     try {
       val queryString = new QueryString(queryStringAsString)
 
@@ -70,12 +71,12 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
           notFound(response, <h1>Not Found</h1>)
       }
     } catch {
-
       case e => {
         e.printStackTrace
         error(response, <html><h1>Error</h1><pre>{e}</pre></html>)
       }
     }
+    
   }
 
   private def ok(response: HttpServletResponse, html: Node) = {
