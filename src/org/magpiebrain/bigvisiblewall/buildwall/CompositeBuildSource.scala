@@ -18,8 +18,7 @@ package org.magpiebrain.bigvisiblewall.buildwall
 /**
  * @author Sam Newman (sam.newman@gmail.com)
  */
-
-class CompositeBuildSource(val sources : BuildSource*) extends BuildSource {
+class CompositeBuildSource(val sources : List[BuildSource]) extends BuildSource {
 
   def get : List[Build] = {
     return sources.flatMap(source => source.get).toList

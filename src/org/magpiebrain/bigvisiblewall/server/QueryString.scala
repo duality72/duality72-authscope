@@ -33,6 +33,10 @@ class QueryString(val underlyingString: String) {
     return None
   }
 
+  def getAll(paramName: String) : List[String] = {
+    return List() ++ map(paramName)
+  }
+
   def getAllOrElse(paramName: String, default: List[String]): List[String] = {
     if (map.isDefinedAt(paramName)) {
       return List() ++ map(paramName)

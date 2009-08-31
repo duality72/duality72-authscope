@@ -65,6 +65,33 @@ class WallServerSystemTests extends Specification with JUnit {
       build.findElement(By.className("project")).getText must equalTo("My Super Project")
     }
 
+    "Display status of more than one cctray feed" in {
+      cctraySource.serveHtmlForUrl("/a",
+        <Projects>
+          <Project name="My Super Project"
+            activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="3"
+            lastBuildTime="2009-07-27T15:03:33" webUrl="http://mybuildmachine/project" />
+        </Projects>
+      )
+
+      cctraySource.serveHtmlForUrl("/b",
+        <Projects>
+          <Project name="My Other Project"
+            activity="Sleeping" lastBuildStatus="Success" lastBuildLabel="3"
+            lastBuildTime="2009-07-27T15:03:33" webUrl="http://mybuildmachine/project" />
+        </Projects>
+      )
+
+      val firstUrl = URLEncoder.encode("http://localhost:6789/a", "UTF-8")
+      val secondUrl = URLEncoder.encode("http://localhost:6789/b", "UTF-8")
+
+      driver.navigate().to("http://localhost:12345/buildWall?source=" + firstUrl + "&source=" + secondUrl)
+
+      val builds = driver.findElements(By.className("project"))
+      builds.get(0).getText must equalTo("My Other Project")
+      builds.get(1).getText must equalTo("My Super Project")
+    }
+
     doLast {
       cctraySource.stop
       buildWallServer.stop

@@ -40,7 +40,7 @@ class CompositeBuildSourceTests extends Specification with JUnit {
         def get : List[Build] = List(build2, build3)
       }
 
-      val compositeSource = new CompositeBuildSource(source1, source2)
+      val compositeSource = new CompositeBuildSource(List(source1, source2))
 
       compositeSource.get must containAll(List(build1, build2, build3))
     }
