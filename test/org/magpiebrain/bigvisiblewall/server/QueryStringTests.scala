@@ -48,6 +48,7 @@ class QueryStringTests extends Specification with JUnit {
       val parser = new QueryString("")
       parser.getAllOrElse("prefix", List("Default")) must haveTheSameElementsAs(List("Default"))
     }
+    
   }
 
 }
