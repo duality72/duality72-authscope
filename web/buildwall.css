@@ -1,45 +1,4 @@
-body {
-	background: black;
-}
-
-.builds {
-	margin: 15px;
-}
-
-li.build .project {
-    color: white;
-}
-
 li.build {
-	text-align: center;
-	font-weight: bold;
 	float:  left;
-	list-style-type: none;
-	padding: 5px;
-	margin: 0 0 15px 15px;
-	height: 75px;
-	width: 300px;
-	vertical-align: middle;
-	-webkit-border-radius: 7px;
-	-moz-border-radius: 7px;	
-}
-
-ul.steps {
-    display: none;
-}
-
-li.build:hover {
-    text-decoration: underline;
-}
-
-.builds li.passed {
-	background: #314d31;
-} 
-
-.builds li.failed {
-	background: #a50000;
-}
-
-.builds li {
-	background: gray;
+	width: 300px;	
 }
