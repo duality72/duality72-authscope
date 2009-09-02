@@ -9,7 +9,7 @@ a {
 }
 
 body {
-	background: black;
+	background: #fefdea;
 }
 
 .builds {
@@ -24,9 +24,9 @@ li.build {
 	text-align: center;
 	font-weight: bold;
 	list-style-type: none;
-	padding: 5px;
+	padding: 10px 5px;
 	margin: 0 0 15px 15px;
-	height: 75px;
+	height: 65px;
 	vertical-align: middle;
 	-webkit-border-radius: 7px;
 	-moz-border-radius: 7px;	
@@ -41,11 +41,11 @@ li.build:hover {
 }
 
 .builds li.passed {
-	background: #314d31;
+	background: #81b373;
 } 
 
 .builds li.failed {
-	background: #a50000;
+	background: #b50003;
 }
 
 .builds li {
