@@ -25,7 +25,16 @@ import scala.xml.{Elem, Node}
 class BuildList(val builds: List[Build]) {
 
   def asHtml(): Node = {
-    return <ul class="builds">{ builds.map(build => buildToHtml(build)) }</ul>
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+      <head>
+          <link rel="stylesheet" href="/static/common.css" type="text/css" />
+          <link rel="stylesheet" href="/static/buildwall.css" type="text/css" />
+          <meta http-equiv="refresh" content="30" />
+      </head>
+      <body>
+        <ul class="builds">{ builds.map(build => buildToHtml(build)) }</ul>
+      </body>
+    </html>
   }
 
   private def buildToHtml(build: Build) = {

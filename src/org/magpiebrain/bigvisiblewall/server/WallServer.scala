@@ -69,10 +69,13 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
           val cruiseSourceUrls = queryString.getAllOrElse("cruiseSource", List()) map (url => URLDecoder.decode(url))
           val cruiseSources = cruiseSourceUrls map ( url => new CruiseCcTrayBuildSource(url, webClient))
 
+          val displayType = queryString.getOrElse("display", "grid")
+
           val projectPrefixes = queryString.getAllOrElse("prefix", List())
           var buildFactory = new SimpleBuildFactory()
+        
           val html = new BuildWall().render(new CompositeBuildSource(List() ++ sources ++ cruiseSources), projectPrefixes, buildFactory)
-          ok(response, new HtmlPage()("/static/buildwall.css", html))
+          ok(response, html)
       } else {
           notFound(response, <h1>Not Found</h1>)
       }

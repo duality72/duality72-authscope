@@ -33,7 +33,7 @@ class BuildListTests extends Specification with JUnit {
 
       val build = new Build("My Super Project", PASSED, Some("http://mybuild"))
       val buildList = new BuildList(List(build))
-      buildList.asHtml must equalIgnoreSpace(expectedHtml)
+      buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml)
     }
 
     "Display HTML for a single failing build" in {
@@ -46,7 +46,7 @@ class BuildListTests extends Specification with JUnit {
 
       val build = new Build("My Super Project", FAILED, Some("http://mybuild"))
       val buildList = new BuildList(List(build))
-      buildList.asHtml must equalIgnoreSpace(expectedHtml)
+      buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml)
     }
     
     "Display HTML for a single build with unknown state" in {
@@ -59,7 +59,7 @@ class BuildListTests extends Specification with JUnit {
 
       val build = new Build("My Super Project", UNKNOWN, Some("http://mybuild"))
       val buildList = new BuildList(List(build))
-      buildList.asHtml must equalIgnoreSpace(expectedHtml)
+      buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml)
     }
 
     "Display a build as failed if any builds collapsed inside it have faied" in {
@@ -79,9 +79,9 @@ class BuildListTests extends Specification with JUnit {
       build.addChild(new Build("Step 2", PASSED, Some("http://mybuild/2")))
 
       val buildList = new BuildList(List(build))
-      buildList.asHtml must equalIgnoreSpace(expectedHtml) 
+      buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml) 
     }
-
+   
 
   }
 }
