@@ -10,6 +10,7 @@
     <property name="build.dir" value="${basedir}/build"/>
     <property name="test-reports.dir" value="${build.dir}/reports"/>
     <property name="compiled.code.dir" value="${build.dir}/compile"/>
+    <property name="release" value="0.1" />
 
     <path id="prod.classpath">
         <fileset dir="${prod.lib.dir}" includes="*.jar"/>
@@ -57,7 +58,7 @@
     </target>
 
     <target name="dist" depends="test" description="Creates a ZIP containing the build code and all dependencies">
-        <zip destfile="${dist.dir}/bigvisiblewall-alldeps.zip">
+        <zip destfile="${dist.dir}/bigvisiblewall-${release}-alldeps.zip">
             <fileset dir="${dist.dir}" includes="*.jar"/>
             <fileset dir="${prod.lib.dir}" includes="*.jar"/>
             <zipfileset dir="${web.dir}" prefix="web"/>
