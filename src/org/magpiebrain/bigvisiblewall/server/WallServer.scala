@@ -69,7 +69,7 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
           val cruiseSourceUrls = queryString.getAllOrElse("cruiseSource", List()) map (url => URLDecoder.decode(url))
           val cruiseSources = cruiseSourceUrls map ( url => new CruiseCcTrayBuildSource(url, webClient))
 
-          val displayType = queryString.getOrElse("display", "grid")
+          val displayType = queryString.getOrElse("display", "smart")
 
           val projectPrefixes = queryString.getAllOrElse("prefix", List())
           var buildFactory = new SimpleBuildFactory()

@@ -105,14 +105,41 @@ class BuildListTests extends Specification with JUnit {
       buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-single.css", "/static/common.css"))
     }
 
-    /*
-    <table class="build passed">
-<tr valign="middle" align="center">
-    <td class="project">enterprisecorp-trunk :: build</td>
-</tr>
+    "Display in grid form if there are more than 6 builds when using smart display" in {
+      val buildList = new BuildList(
+        List(new Build("My Project :: Build", FAILED, None),
+          new Build("My Project :: Build", FAILED, None),
+          new Build("My Project :: Build", FAILED, None),
+          new Build("My Project :: Build", FAILED, None),
+          new Build("My Project :: Build", FAILED, None),
+          new Build("My Project :: Build", FAILED, None)
+          ), "smart")
+      buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-grid.css", "/static/common.css"))
+    }
 
-</table>
-     */
+    "Display in list form if there are up to 5 builds when using smart display" in {
+      val buildList = new BuildList(
+        List(new Build("My Project :: Build", FAILED, None),
+          new Build("My Project :: Build", FAILED, None),
+          new Build("My Project :: Build", FAILED, None),
+          new Build("My Project :: Build", FAILED, None),
+          new Build("My Project :: Build", FAILED, None)
+          ), "smart")
+      buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-list.css", "/static/common.css"))
+    }
+
+    "Display in single form if there is one build when using smart display" in {
+      val expectedHtml =
+            <table class="build passed">
+              <tr valign="middle" align="center">
+                <td><span class="project">enterprisecorp-trunk :: build</span></td>
+              </tr>
+            </table>
+
+      val buildList = new BuildList(List(new Build("enterprisecorp-trunk :: build", PASSED, None)), "smart")
+      buildList.asHtml \ "body" \\ "table" must equalIgnoreSpace(expectedHtml)
+      buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-single.css", "/static/common.css"))
+    }
 
   }
 }

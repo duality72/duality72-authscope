@@ -40,6 +40,13 @@ class BuildList(val builds: List[Build], val displayType: String) {
   private def content(builds: List[Build]): Elem = {
     displayType match {
       case "single" => <div> { builds.map(build => asTable(build)) } </div>
+      case "smart" => {
+        if (builds.length == 1) {
+          <div> { builds.map(build => asTable(build)) } </div>
+        } else {
+          <ul class="builds">{ builds.map(build => buildToHtml(build)) }</ul>
+        }
+      }
       case _ => <ul class="builds">{ builds.map(build => buildToHtml(build)) }</ul>
     }
   }
@@ -56,6 +63,15 @@ class BuildList(val builds: List[Build], val displayType: String) {
     displayType match {
       case "list" => "/static/buildwall-list.css"
       case "single" => "/static/buildwall-single.css"
+      case "smart" => {
+        if (builds.length == 1) {
+          "/static/buildwall-single.css"
+        } else if (builds.length < 6) {
+          "/static/buildwall-list.css"
+        } else {
+          "/static/buildwall-grid.css"
+        }
+      }
       case _ => "/static/buildwall-grid.css"
     }
   }
