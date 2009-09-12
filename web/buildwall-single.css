@@ -1,5 +1,4 @@
 html, body.single {
-	background: yellow;
 	height: 100%;
 }
 
@@ -11,14 +10,9 @@ ul.builds {
 	margin: 0 auto 0;
 }
 
-* html ul.builds {
-height: 100%;
-}
-
 li.build {
 	min-height: 100%;
 	height:auto !important; /* real browsers */
-	line-height: 100%;
 	height: 100%;
-	margin: 0 auto 0;
+	display: block;
 }
