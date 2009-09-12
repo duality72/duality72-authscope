@@ -16,7 +16,7 @@ body {
 	margin: 15px;
 }
 
-.build .project {
+li.build .project {
     color: white;
 }
 
@@ -51,6 +51,6 @@ li.build:hover {
 	background: #b50003;
 }
 
-.builds li {
+.unknown {
 	background: gray;
 }
