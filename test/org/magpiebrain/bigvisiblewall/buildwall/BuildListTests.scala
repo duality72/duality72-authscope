@@ -93,9 +93,26 @@ class BuildListTests extends Specification with JUnit {
     }
 
     "Display in a single giant style" in {
-      val buildList = new BuildList(List(new Build("My Project :: Build", FAILED, None)), "single")
+      val expectedHtml =
+            <table class="build passed">
+              <tr valign="middle" align="center">
+                <td><span class="project">enterprisecorp-trunk :: build</span></td>
+              </tr>
+            </table>
+
+      val buildList = new BuildList(List(new Build("enterprisecorp-trunk :: build", PASSED, None)), "single")
+      buildList.asHtml \ "body" \\ "table" must equalIgnoreSpace(expectedHtml)
       buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-single.css", "/static/common.css"))
     }
+
+    /*
+    <table class="build passed">
+<tr valign="middle" align="center">
+    <td class="project">enterprisecorp-trunk :: build</td>
+</tr>
+
+</table>
+     */
 
   }
 }

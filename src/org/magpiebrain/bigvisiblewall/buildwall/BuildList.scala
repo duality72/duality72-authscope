@@ -32,9 +32,24 @@ class BuildList(val builds: List[Build], val displayType: String) {
           <meta http-equiv="refresh" content="30" />
       </head>
       <body>
-        <ul class="builds">{ builds.map(build => buildToHtml(build)) }</ul>
+        { content(builds) }
       </body>
     </html>
+  }
+
+  private def content(builds: List[Build]): Elem = {
+    displayType match {
+      case "single" => <div> { builds.map(build => asTable(build)) } </div>
+      case _ => <ul class="builds">{ builds.map(build => buildToHtml(build)) }</ul>
+    }
+  }
+
+  private def asTable(build: Build): Elem = {
+    <table class={ "build " + build.status.name.toLowerCase }>
+              <tr valign="middle" align="center">
+                <td>{ linkToBuild(build) }</td>
+              </tr>
+            </table>
   }
 
   private def cssForDisplayType: String = {
@@ -45,15 +60,18 @@ class BuildList(val builds: List[Build], val displayType: String) {
     }
   }
 
-  private def buildToHtml(build: Build) = {
+  private def linkToBuild(build: Build): Elem = {
     //TODO: Should deal more elegantly with the optionality with the URL
     var buildLink = <a class="project" href={ build.urlToBuild.getOrElse("") }>{ build.name }</a>
     if (!build.urlToBuild.isDefined) {
       buildLink = <span class="project">{ build.name }</span>
     }
+    return buildLink
+  }
 
+  private def buildToHtml(build: Build) = {
     <li class={ "build " + build.status.name.toLowerCase}>
-      { buildLink }
+      { linkToBuild(build) }
       { stepsToHtml(build.children) }
     </li>
   }
