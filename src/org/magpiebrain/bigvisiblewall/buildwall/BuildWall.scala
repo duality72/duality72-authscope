@@ -21,7 +21,7 @@ import scala.xml.Node
 
 class BuildWall() {
 
-   def render(source: BuildSource, prefixes: Seq[String], buildFactory: BuildFactory) : Node = {
+   def render(source: BuildSource, prefixes: Seq[String], buildFactory: BuildFactory, displayType: String) : Node = {
      var builds = source.get
      builds = builds.sort((b1, b2) => (b1.name compareTo b2.name) < 0)
 
@@ -33,7 +33,7 @@ class BuildWall() {
        builds = filteredBuids.toList
      }
 
-     return new BuildList(builds).asHtml
+     return new BuildList(builds, displayType).asHtml
    }
 
 }

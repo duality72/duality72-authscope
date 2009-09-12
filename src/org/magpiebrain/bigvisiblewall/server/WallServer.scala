@@ -74,7 +74,7 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
           val projectPrefixes = queryString.getAllOrElse("prefix", List())
           var buildFactory = new SimpleBuildFactory()
         
-          val html = new BuildWall().render(new CompositeBuildSource(List() ++ sources ++ cruiseSources), projectPrefixes, buildFactory)
+          val html = new BuildWall().render(new CompositeBuildSource(List() ++ sources ++ cruiseSources), projectPrefixes, buildFactory, displayType)
           ok(response, html)
       } else {
           notFound(response, <h1>Not Found</h1>)

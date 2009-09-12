@@ -32,7 +32,7 @@ class BuildListTests extends Specification with JUnit {
         </ul>
 
       val build = new Build("My Super Project", PASSED, Some("http://mybuild"))
-      val buildList = new BuildList(List(build))
+      val buildList = new BuildList(List(build), "")
       buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml)
     }
 
@@ -45,7 +45,7 @@ class BuildListTests extends Specification with JUnit {
         </ul>
 
       val build = new Build("My Super Project", FAILED, Some("http://mybuild"))
-      val buildList = new BuildList(List(build))
+      val buildList = new BuildList(List(build), "")
       buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml)
     }
     
@@ -58,7 +58,7 @@ class BuildListTests extends Specification with JUnit {
         </ul>
 
       val build = new Build("My Super Project", UNKNOWN, Some("http://mybuild"))
-      val buildList = new BuildList(List(build))
+      val buildList = new BuildList(List(build), "")
       buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml)
     }
 
@@ -78,10 +78,24 @@ class BuildListTests extends Specification with JUnit {
       build.addChild(new Build("Step 1", FAILED, Some("http://mybuild/1")))
       build.addChild(new Build("Step 2", PASSED, Some("http://mybuild/2")))
 
-      val buildList = new BuildList(List(build))
+      val buildList = new BuildList(List(build), "")
       buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml) 
     }
-   
+
+    "Display in a grid style" in {
+      val buildList = new BuildList(List(new Build("My Project :: Build", FAILED, None)), "grid")
+      buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-grid.css", "/static/common.css"))
+    }
+
+    "Display in a list style" in {
+      val buildList = new BuildList(List(new Build("My Project :: Build", FAILED, None)), "list")
+      buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-list.css", "/static/common.css"))
+    }
+
+    "Display in a single giant style" in {
+      val buildList = new BuildList(List(new Build("My Project :: Build", FAILED, None)), "single")
+      buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-single.css", "/static/common.css"))
+    }
 
   }
 }

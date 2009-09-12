@@ -22,19 +22,27 @@ import scala.xml.{Elem, Node}
  * HTML representation of a list of builds
  */
 
-class BuildList(val builds: List[Build]) {
+class BuildList(val builds: List[Build], val displayType: String) {
 
   def asHtml(): Node = {
     <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
       <head>
           <link rel="stylesheet" href="/static/common.css" type="text/css" />
-          <link rel="stylesheet" href="/static/buildwall.css" type="text/css" />
+          <link rel="stylesheet" href={ cssForDisplayType } type="text/css" />
           <meta http-equiv="refresh" content="30" />
       </head>
       <body>
         <ul class="builds">{ builds.map(build => buildToHtml(build)) }</ul>
       </body>
     </html>
+  }
+
+  private def cssForDisplayType: String = {
+    displayType match {
+      case "list" => "/static/buildwall-list.css"
+      case "single" => "/static/buildwall-single.css"
+      case _ => "/static/buildwall-grid.css"
+    }
   }
 
   private def buildToHtml(build: Build) = {
