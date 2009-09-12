@@ -60,6 +60,7 @@
     <target name="dist" depends="test" description="Creates a ZIP containing the build code and all dependencies">
         <zip destfile="${dist.dir}/bigvisiblewall-${release}-alldeps.zip">
             <fileset dir="${dist.dir}" includes="*.jar"/>
+            <fileset dir="${basedir}" includes="README" />
             <fileset dir="${prod.lib.dir}" includes="*.jar"/>
             <zipfileset dir="${web.dir}" prefix="web"/>
             <fileset dir="${runtime.dir}" />
