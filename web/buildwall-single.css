@@ -4,15 +4,13 @@ html, body.single {
 
 ul.builds {
 	min-height: 100%;
-	background-color: blue;
-	height:auto !important; /* real browsers */
+	height:auto !important;
 	height: 100%;
-	margin: 0 auto 0;
 }
 
 li.build {
 	min-height: 100%;
-	height:auto !important; /* real browsers */
+	height:auto !important; 
 	height: 100%;
 	display: block;
 }
