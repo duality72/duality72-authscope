@@ -1,16 +1,9 @@
-html, body.single {
+html, body {height: 100%;}
+
+.build {
 	height: 100%;
+	width: 100%;
+	margin: 0 auto 0;
+	font-size: 300%;
 }
 
-ul.builds {
-	min-height: 100%;
-	height:auto !important;
-	height: 100%;
-}
-
-li.build {
-	min-height: 100%;
-	height:auto !important; 
-	height: 100%;
-	display: block;
-}
