@@ -46,7 +46,7 @@ class CruiseBuildFactory(val depth: Int) extends BuildFactory {
     for (stage <- stages) {
       val projectName = projectNameFromStageName(stage.name)
       if (!projects.isDefinedAt(projectName)) {
-        projects.put(projectName, new Build(projectName, UNKNOWN, None))
+        projects.put(projectName, new CruiseProject(projectName))
       }
       projects(projectName).addChild(stage)
     }
