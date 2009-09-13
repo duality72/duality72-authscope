@@ -66,8 +66,7 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
           val sourceUrls = queryString.getAllOrElse("source", List()) map (url => URLDecoder.decode(url))
           val sources = sourceUrls map ( url => new CcTrayBuildSource(url, webClient))
 
-          val cruiseSourceUrls = queryString.getAllOrElse("cruiseSource", List()) map (url => URLDecoder.decode(url))
-          val cruiseSources = cruiseSourceUrls map ( url => new CruiseCcTrayBuildSource(url, webClient, 1))
+          val cruiseSources = queryString.getAllOrElse("cruiseSource", List()) map (v => createCruiseSourceFromParam(webClient, v))
 
           val displayType = queryString.getOrElse("display", "smart")
 
@@ -85,6 +84,14 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
         error(response, <html><h1>Error</h1><pre>{e}</pre></html>)
       }
     }
+  }
+
+  def createCruiseSourceFromParam(client: WebClient, value: String) : CruiseCcTrayBuildSource = {
+    if (!value.contains(",")) {
+      return new CruiseCcTrayBuildSource(URLDecoder.decode(value), client, 1);
+    }
+    val parts = value.split(",")
+    return new CruiseCcTrayBuildSource(URLDecoder.decode(parts(0)), client, parts(1).toInt)
   }
 
   private def ok(response: HttpServletResponse, html: Node) = {
