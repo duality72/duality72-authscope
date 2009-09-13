@@ -54,14 +54,14 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
     try {
       val queryString = new QueryString(queryStringAsString)
 
-      if (target.equals("/")) {
+      if (target.equals("/cardWall")) {
           //TODO Pull out Int from query string...
           val limit = queryString.getOrElse("limit", "4")
           ok(response, new CardList(projectRepository.cards.slice(0, limit.toInt)).asHtml)
       } else if (target.startsWith("/static/")) {
         val staticFilename = target.drop(8)
         okString(response, new StaticFile(staticFileDir, staticFilename).contents)
-      } else if (target.equals("/buildWall")) {
+      } else if (target.equals("/")) {
           //TODO pull URL from query string
           val sourceUrls = queryString.getAllOrElse("source", List()) map (url => URLDecoder.decode(url))
           val sources = sourceUrls map ( url => new CcTrayBuildSource(url, webClient))

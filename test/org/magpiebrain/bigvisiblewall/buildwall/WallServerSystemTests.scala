@@ -58,7 +58,7 @@ class WallServerSystemTests extends Specification with JUnit {
         </Projects>
       )
       val cctrayUrl = URLEncoder.encode("http://localhost:6789/", "UTF-8");
-      driver.navigate().to("http://localhost:12345/buildWall?source=" + cctrayUrl)
+      driver.navigate().to("http://localhost:12345/?source=" + cctrayUrl)
 
       
       val build = driver.findElements(By.className("build")).get(0)
@@ -85,7 +85,7 @@ class WallServerSystemTests extends Specification with JUnit {
       val firstUrl = URLEncoder.encode("http://localhost:6789/a", "UTF-8")
       val secondUrl = URLEncoder.encode("http://localhost:6789/b", "UTF-8")
 
-      driver.navigate().to("http://localhost:12345/buildWall?source=" + firstUrl + "&source=" + secondUrl)
+      driver.navigate().to("http://localhost:12345/?source=" + firstUrl + "&source=" + secondUrl)
 
       val builds = driver.findElements(By.className("project"))
       builds.get(0).getText must equalTo("My Other Project")
@@ -115,7 +115,7 @@ class WallServerSystemTests extends Specification with JUnit {
       val firstUrl = URLEncoder.encode("http://localhost:6789/normal", "UTF-8")
       val secondUrl = URLEncoder.encode("http://localhost:6789/cruise", "UTF-8")
 
-      driver.navigate().to("http://localhost:12345/buildWall?source=" + firstUrl + "&cruiseSource=" + secondUrl)
+      driver.navigate().to("http://localhost:12345/?source=" + firstUrl + "&cruiseSource=" + secondUrl)
 
       val builds = driver.findElements(By.className("project"))
       builds.get(0).getText must equalTo("My Other Project")

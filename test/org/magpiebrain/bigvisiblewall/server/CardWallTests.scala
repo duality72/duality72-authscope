@@ -49,7 +49,7 @@ class CardWallTests extends Specification with JUnit {
         Card("Five")
         )
 
-      driver.navigate.to("http://localhost:12345/")
+      driver.navigate.to("http://localhost:12345/cardWall")
 
       val cardElements = convertList(driver.findElements(By.className("card")))
       val cardTitles = cardElements map (elem => elem.findElement(By.className("title")).getText)
@@ -67,7 +67,7 @@ class CardWallTests extends Specification with JUnit {
         Card("Two")
         )
 
-      driver.navigate.to("http://localhost:12345/?limit=2")
+      driver.navigate.to("http://localhost:12345/cardWall?limit=2")
 
       val cardElements = convertList(driver.findElements(By.className("card")))
       val cardTitles = cardElements map (elem => elem.findElement(By.className("title")).getText)
@@ -80,7 +80,7 @@ class CardWallTests extends Specification with JUnit {
     "Can handle requesting more cards than there are" in {
       stubProjectRepo.addCards(Card("One"))
 
-      driver.navigate.to("http://localhost:12345/?limit=2")
+      driver.navigate.to("http://localhost:12345/cardWall?limit=2")
 
       val cardElements = convertList(driver.findElements(By.className("card")))
       val cardTitles = cardElements map (elem => elem.findElement(By.className("title")).getText)
