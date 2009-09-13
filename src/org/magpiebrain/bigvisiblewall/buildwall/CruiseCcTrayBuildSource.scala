@@ -33,11 +33,12 @@ import common.WebClient
  * @author Sam Newman (sam.newman@gmail.com)
  */
 
-class CruiseCcTrayBuildSource(val url: String, val client: WebClient) extends BuildSource {
+//TODO I dislike having to pass in the depth param here
+class CruiseCcTrayBuildSource(val url: String, val client: WebClient, val depth: Int) extends BuildSource {
 
   def get : List[Build] = {
     val feedParser = new CcTrayFeedParser()
-    return new CruiseBuildFactory().make(feedParser.parse(client.getAsXml(url)))
+    return new CruiseBuildFactory(depth).make(feedParser.parse(client.getAsXml(url)))
   }
 
 }

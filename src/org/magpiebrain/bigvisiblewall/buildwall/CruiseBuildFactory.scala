@@ -16,13 +16,13 @@
 
 package org.magpiebrain.bigvisiblewall.buildwall
 
-import collection.mutable.HashMap
+
+import collection.mutable.{ArrayBuffer, HashMap}
 
 /**
  * @author Sam Newman (sam.newman@gmail.com)
  */
-
-class CruiseBuildFactory extends BuildFactory {
+class CruiseBuildFactory(val depth: Int) extends BuildFactory {
 
   def make(data: List[Tuple3[String, BuildStatus, String]]): List[Build] = {
     //Sort the list so we find the root nodes first
@@ -44,6 +44,19 @@ class CruiseBuildFactory extends BuildFactory {
     val root = new Build(projectName(stages.head.name), UNKNOWN, None)
 
     stages.foreach( build => root.addChild(build))
+
+    if (depth == 2) {
+      return root.getChildren
+    } else if (depth == 3) {
+      val buf = new ArrayBuffer[Build]()
+            
+      for (child <- root.getChildren) {
+        for (innerChild <- child.getChildren) {
+          buf + innerChild
+        }
+      }
+      return buf.toList
+    }
     
     return List(root)
   }
