@@ -38,27 +38,35 @@ class CruiseBuildFactory(val depth: Int) extends BuildFactory {
       }
     }
 
-    // Now we have a list of stages that need to be nested under a 'root' Build
-    // which represents the project
+    // Now we have a list of stages that need to be nested under a 'root' Builds
+    // which represents each project
     val stages = builds.values.toList
-    val root = new Build(projectName(stages.head.name), UNKNOWN, None)
+    val projects = new HashMap[String, Build]
 
-    stages.foreach( build => root.addChild(build))
-
-    if (depth == 2) {
-      return root.getChildren
-    } else if (depth == 3) {
-      val buf = new ArrayBuffer[Build]()
-            
-      for (child <- root.getChildren) {
-        for (innerChild <- child.getChildren) {
-          buf + innerChild
-        }
+    for (stage <- stages) {
+      val projectName = projectNameFromStageName(stage.name)
+      if (!projects.isDefinedAt(projectName)) {
+        projects.put(projectName, new Build(projectName, UNKNOWN, None))
       }
+      projects(projectName).addChild(stage)
+    }
+
+    return filterByDepth(depth, projects.values.toList)
+  }
+
+  private def filterByDepth(depth: Int, projects: List[Build]) : List[Build] = {
+    //TODO should just rewrite this as a recursive fn with depth control...
+    if (depth == 2) {
+      val buf = new ArrayBuffer[Build]()
+      projects.foreach ( (project) => buf ++= project.getChildren)
+      return buf.toList
+    } else if (depth == 3) {
+    val buf = new ArrayBuffer[Build]()
+      projects.foreach ( (project) => project.getChildren.foreach( (child) => buf ++= child.getChildren))
       return buf.toList
     }
-    
-    return List(root)
+
+    return projects
   }
 
   /*
@@ -73,7 +81,7 @@ class CruiseBuildFactory(val depth: Int) extends BuildFactory {
     return name.reverse.split(" :: ", 2)(1).reverse
   }
 
-  private def projectName(name: String) : String = {
+  private def projectNameFromStageName(name: String) : String = {
     return name.split(" :: ")(0)
   }
 

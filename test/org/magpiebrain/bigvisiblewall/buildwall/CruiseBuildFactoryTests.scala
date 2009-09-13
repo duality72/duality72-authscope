@@ -53,6 +53,24 @@ class CruiseBuildFactoryTests extends Specification with JUnit {
       ))
     }
 
+    "Create multiple builds" in {
+      val factory = new CruiseBuildFactory(1)
+
+      // Cruise sends a record for a build itself - e.g. Project :: Stage - as well as a
+      // record for each step inside the stage - Project :: Stage :: Step1
+      val data = List(
+        ("Project 1 :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1"),
+        ("Project 1 :: Stage 1", UNKNOWN, "http://url/stage1"),
+        ("Project 2 :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1"),
+        ("Project 2 :: Stage 1", UNKNOWN, "http://url/stage1")
+      )
+
+      factory.make(data) must containAll (List(
+        new Build("Project 1", UNKNOWN, None),
+        new Build("Project 2", UNKNOWN, None)
+      ))
+    }
+ 
     "Show second level stages" in {
       val factory = new CruiseBuildFactory(2)
 
