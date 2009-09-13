@@ -18,7 +18,7 @@ package org.magpiebrain.bigvisiblewall.buildwall
 
 import collection.mutable.ArrayBuffer
 
-class Build(val name: String, var status: BuildStatus, val urlToBuild: Option[String]) {
+class Build(val name: String, private var status: BuildStatus, val urlToBuild: Option[String]) {
 
   var children = new ArrayBuffer[Build]
 
@@ -26,6 +26,10 @@ class Build(val name: String, var status: BuildStatus, val urlToBuild: Option[St
 
   def addChild(build: Build) {
     children += build
+  }
+  
+  def getStatus : BuildStatus = {
+    return status
   }
 
   override def toString(): String = {

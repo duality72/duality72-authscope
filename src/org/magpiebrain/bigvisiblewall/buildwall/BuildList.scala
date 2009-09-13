@@ -52,7 +52,7 @@ class BuildList(val builds: List[Build], val displayType: String) {
   }
 
   private def asTable(build: Build): Elem = {
-    <table class={ "build " + build.status.name.toLowerCase }>
+    <table class={ "build " + build.getStatus.name.toLowerCase }>
               <tr valign="middle" align="center">
                 <td>{ linkToBuild(build) }</td>
               </tr>
@@ -86,7 +86,7 @@ class BuildList(val builds: List[Build], val displayType: String) {
   }
 
   private def buildToHtml(build: Build) = {
-    <li class={ "build " + build.status.name.toLowerCase}>
+    <li class={ "build " + build.getStatus.name.toLowerCase}>
       { linkToBuild(build) }
       { stepsToHtml(build.children) }
     </li>
