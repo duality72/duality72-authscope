@@ -1,0 +1,8 @@
+<Projects>
+    <Project activity="Sleeping" lastBuildTime="2009-09-12T17:06:48Z"
+             webUrl="http://build.myserver.com/job/BigVisibleWall/" lastBuildLabel="11" lastBuildStatus="Success"
+             name="BigVisibleWall"></Project>
+    <Project activity="Sleeping" lastBuildTime="2009-08-22T11:16:47Z"
+             webUrl="http://build.myserver.com/job/SomeOtherBuild/" lastBuildLabel="31" lastBuildStatus="Success"
+             name="SomeOtherBuild"></Project>
+</Projects>
