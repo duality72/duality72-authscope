@@ -48,6 +48,13 @@ class QueryStringTests extends Specification with JUnit {
       val parser = new QueryString("")
       parser.getAllOrElse("prefix", List("Default")) must haveTheSameElementsAs(List("Default"))
     }
+
+    "Apply a function to a value" in {
+      val parser = new QueryString("range=5,10") 
+      val result = parser.get("range", ((value) => new Tuple2(value.split(",")(0), value.split(",")(1))))
+      result._1 must beEqualTo("5")
+      result._2 must beEqualTo("10")
+    }
     
   }
 

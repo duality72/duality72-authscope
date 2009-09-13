@@ -22,6 +22,10 @@ class QueryString(val underlyingString: String) {
 
   val map = parse(underlyingString)
 
+  def get[A](key: String, f: String => A) : A = {
+    return f(get(key))
+  }
+
   def get(paramName: String) : String = {
     return map(paramName)(0)
   }
