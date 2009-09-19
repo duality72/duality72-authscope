@@ -37,4 +37,8 @@ class CruiseProject(override val name: String) extends Build(name, UNKNOWN, None
     }
   }
 
+  override def working : Boolean = {
+    return getChildren.filter(_.working == true).length > 0
+  }
+
 }

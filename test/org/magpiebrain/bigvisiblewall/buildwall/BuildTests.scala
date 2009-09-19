@@ -28,12 +28,12 @@ class BuildTests extends Specification with JUnit {
   "Build" should {
 
     "Be considered working if it is performing an activity" in {
-      new Build("", UNKNOWN, None, "Building").working must_== false
+      new Build("", UNKNOWN, None, "Building").working must_== true
       
     }
 
     "Be considered not working if it is not performing an activity" in {
-      new Build("", UNKNOWN, None, "Sleeping").working must_== true
+      new Build("", UNKNOWN, None, "Sleeping").working must_== false
     }
 
   }

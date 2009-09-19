@@ -47,12 +47,28 @@ class CruiseProjectTests extends Specification with JUnit {
     }
 
     "Have a status of failed if any child is failed" in {
-     val project = new CruiseProject("Project")
+      val project = new CruiseProject("Project")
       project.addChild(new Build("Child", UNKNOWN, None, ""))
       project.addChild(new Build("Child", PASSED, None, ""))
       project.addChild(new Build("Child", FAILED, None, ""))
 
       project.getStatus must beEqualTo(FAILED)
+    }
+
+    "Should be working if any child is working" in {
+      val project = new CruiseProject("Project")
+      project.addChild(new Build("", UNKNOWN, None, "Sleeping"))
+      project.addChild(new Build("", PASSED, None, "Building"))
+
+      project.working must_== true
+    }
+    
+    "Should not be working if all children are not working" in {
+      val project = new CruiseProject("Project")
+      project.addChild(new Build("", UNKNOWN, None, "Sleeping"))
+      project.addChild(new Build("", PASSED, None, "Sleeping"))
+
+      project.working must_== false
     }
 
   }
