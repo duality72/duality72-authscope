@@ -51,6 +51,11 @@ li.build:hover {
 	background: #b50003;
 }
 
+.working .project {
+	padding-left: 50px;
+	background: url(box_spinner.gif) no-repeat 0 12px;
+}
+
 .unknown {
 	background: gray;
 }
