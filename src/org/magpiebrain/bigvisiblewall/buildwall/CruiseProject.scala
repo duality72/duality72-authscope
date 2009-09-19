@@ -21,7 +21,7 @@ package org.magpiebrain.bigvisiblewall.buildwall
  * @author Sam Newman (sam.newman@gmail.com)
  */
 
-class CruiseProject(override val name: String) extends Build(name, UNKNOWN, None) {
+class CruiseProject(override val name: String) extends Build(name, UNKNOWN, None, "") {
 
   override def getStatus : BuildStatus = {
     if (getChildren.isEmpty) {

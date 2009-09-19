@@ -29,7 +29,7 @@ class BuildWallTests extends Specification with JUnit {
     "Sort project names alphabetically" in {
       val buildSource = new BuildSource() {
         def get : List[Build] = {
-          List(new Build("C", UNKNOWN, None), new Build("A", UNKNOWN, None), new Build("B", UNKNOWN, None))
+          List(new Build("C", UNKNOWN, None, ""), new Build("A", UNKNOWN, None, ""), new Build("B", UNKNOWN, None, ""))
         }
       }
 
@@ -43,7 +43,7 @@ class BuildWallTests extends Specification with JUnit {
     "Filter build results by project name prefix" in {
        val buildSource = new BuildSource() {
         def get : List[Build] = {
-          List(new Build("Project 1 :: Some Stuff", UNKNOWN, None), new Build("Project 2 :: Some Other Stuff", UNKNOWN, None))
+          List(new Build("Project 1 :: Some Stuff", UNKNOWN, None, ""), new Build("Project 2 :: Some Other Stuff", UNKNOWN, None, ""))
         }
       }
 
@@ -59,7 +59,7 @@ class BuildWallTests extends Specification with JUnit {
     "Show all builds when no prefix is specified" in {
       val buildSource = new BuildSource() {
         def get : List[Build] = {
-          List(new Build("Project 1 :: Some Stuff", UNKNOWN, None), new Build("Project 2 :: Some Other Stuff", UNKNOWN, None))
+          List(new Build("Project 1 :: Some Stuff", UNKNOWN, None, ""), new Build("Project 2 :: Some Other Stuff", UNKNOWN, None, ""))
         }
       }
 
@@ -75,9 +75,9 @@ class BuildWallTests extends Specification with JUnit {
       val buildSource = new BuildSource() {
         def get : List[Build] = {
           List(
-            new Build("Project 1 :: Some Stuff", UNKNOWN, None),
-            new Build("Project 2 :: Some Other Stuff", UNKNOWN, None),
-            new Build("Project 3 :: Things", UNKNOWN, None))
+            new Build("Project 1 :: Some Stuff", UNKNOWN, None, ""),
+            new Build("Project 2 :: Some Other Stuff", UNKNOWN, None, ""),
+            new Build("Project 3 :: Things", UNKNOWN, None, ""))
         }
       }
 

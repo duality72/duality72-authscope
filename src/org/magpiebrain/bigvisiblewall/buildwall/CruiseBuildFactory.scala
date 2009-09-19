@@ -32,9 +32,9 @@ class CruiseBuildFactory(val depth: Int) extends BuildFactory {
     for (entry <- sortedEntries) {
       val buildName = entry._1
       if (isStage(buildName)) {
-        builds.put(buildName, new Build(buildName, entry._2, Some(entry._3)))
+        builds.put(buildName, new Build(buildName, entry._2, Some(entry._3), ""))
       } else {
-        builds(stageName(buildName)).addChild(new Build(buildName, entry._2, Some(entry._3)))
+        builds(stageName(buildName)).addChild(new Build(buildName, entry._2, Some(entry._3), ""))
       }
     }
 

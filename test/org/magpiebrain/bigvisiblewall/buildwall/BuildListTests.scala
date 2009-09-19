@@ -31,7 +31,7 @@ class BuildListTests extends Specification with JUnit {
           </li>
         </ul>
 
-      val build = new Build("My Super Project", PASSED, Some("http://mybuild"))
+      val build = new Build("My Super Project", PASSED, Some("http://mybuild"), "")
       val buildList = new BuildList(List(build), "")
       buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml)
     }
@@ -44,7 +44,7 @@ class BuildListTests extends Specification with JUnit {
           </li>
         </ul>
 
-      val build = new Build("My Super Project", FAILED, Some("http://mybuild"))
+      val build = new Build("My Super Project", FAILED, Some("http://mybuild"), "")
       val buildList = new BuildList(List(build), "")
       buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml)
     }
@@ -57,7 +57,7 @@ class BuildListTests extends Specification with JUnit {
           </li>
         </ul>
 
-      val build = new Build("My Super Project", UNKNOWN, Some("http://mybuild"))
+      val build = new Build("My Super Project", UNKNOWN, Some("http://mybuild"), "")
       val buildList = new BuildList(List(build), "")
       buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml)
     }
@@ -74,21 +74,21 @@ class BuildListTests extends Specification with JUnit {
           </li>
         </ul>
 
-      val build = new Build("My Project :: Build", FAILED, None)
-      build.addChild(new Build("Step 1", FAILED, Some("http://mybuild/1")))
-      build.addChild(new Build("Step 2", PASSED, Some("http://mybuild/2")))
+      val build = new Build("My Project :: Build", FAILED, None, "")
+      build.addChild(new Build("Step 1", FAILED, Some("http://mybuild/1"), ""))
+      build.addChild(new Build("Step 2", PASSED, Some("http://mybuild/2"), ""))
 
       val buildList = new BuildList(List(build), "")
       buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml) 
     }
 
     "Display in a grid style" in {
-      val buildList = new BuildList(List(new Build("My Project :: Build", FAILED, None)), "grid")
+      val buildList = new BuildList(List(new Build("My Project :: Build", FAILED, None, "")), "grid")
       buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-grid.css", "/static/common.css"))
     }
 
     "Display in a list style" in {
-      val buildList = new BuildList(List(new Build("My Project :: Build", FAILED, None)), "list")
+      val buildList = new BuildList(List(new Build("My Project :: Build", FAILED, None, "")), "list")
       buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-list.css", "/static/common.css"))
     }
 
@@ -100,30 +100,30 @@ class BuildListTests extends Specification with JUnit {
               </tr>
             </table>
 
-      val buildList = new BuildList(List(new Build("enterprisecorp-trunk :: build", PASSED, None)), "single")
+      val buildList = new BuildList(List(new Build("enterprisecorp-trunk :: build", PASSED, None, "")), "single")
       buildList.asHtml \ "body" \\ "table" must equalIgnoreSpace(expectedHtml)
       buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-single.css", "/static/common.css"))
     }
 
     "Display in grid form if there are more than 6 builds when using smart display" in {
       val buildList = new BuildList(
-        List(new Build("My Project :: Build", FAILED, None),
-          new Build("My Project :: Build", FAILED, None),
-          new Build("My Project :: Build", FAILED, None),
-          new Build("My Project :: Build", FAILED, None),
-          new Build("My Project :: Build", FAILED, None),
-          new Build("My Project :: Build", FAILED, None)
+        List(new Build("My Project :: Build", FAILED, None, ""),
+          new Build("My Project :: Build", FAILED, None, ""),
+          new Build("My Project :: Build", FAILED, None, ""),
+          new Build("My Project :: Build", FAILED, None, ""),
+          new Build("My Project :: Build", FAILED, None, ""),
+          new Build("My Project :: Build", FAILED, None, "")
           ), "smart")
       buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-grid.css", "/static/common.css"))
     }
 
     "Display in list form if there are up to 5 builds when using smart display" in {
       val buildList = new BuildList(
-        List(new Build("My Project :: Build", FAILED, None),
-          new Build("My Project :: Build", FAILED, None),
-          new Build("My Project :: Build", FAILED, None),
-          new Build("My Project :: Build", FAILED, None),
-          new Build("My Project :: Build", FAILED, None)
+        List(new Build("My Project :: Build", FAILED, None, ""),
+          new Build("My Project :: Build", FAILED, None, ""),
+          new Build("My Project :: Build", FAILED, None, ""),
+          new Build("My Project :: Build", FAILED, None, ""),
+          new Build("My Project :: Build", FAILED, None, "")
           ), "smart")
       buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-list.css", "/static/common.css"))
     }
@@ -136,7 +136,7 @@ class BuildListTests extends Specification with JUnit {
               </tr>
             </table>
 
-      val buildList = new BuildList(List(new Build("enterprisecorp-trunk :: build", PASSED, None)), "smart")
+      val buildList = new BuildList(List(new Build("enterprisecorp-trunk :: build", PASSED, None, "")), "smart")
       buildList.asHtml \ "body" \\ "table" must equalIgnoreSpace(expectedHtml)
       buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-single.css", "/static/common.css"))
     }

@@ -18,7 +18,7 @@ package org.magpiebrain.bigvisiblewall.buildwall
 
 import collection.mutable.ArrayBuffer
 
-class Build(val name: String, private val status: BuildStatus, val urlToBuild: Option[String]) {
+class Build(val name: String, private val status: BuildStatus, val urlToBuild: Option[String], val currentActivity: String) {
 
   var children = new ArrayBuffer[Build]
 

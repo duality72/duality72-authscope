@@ -28,9 +28,9 @@ class CompositeBuildSourceTests extends Specification with JUnit {
   "Composite Build Source" should {
 
     "Get builds from multiple sources" in {
-      val build1 = new Build("1", UNKNOWN, None)
-      val build2 = new Build("2", UNKNOWN, None)
-      val build3 = new Build("3", UNKNOWN, None)
+      val build1 = new Build("1", UNKNOWN, None, "")
+      val build2 = new Build("2", UNKNOWN, None, "")
+      val build3 = new Build("3", UNKNOWN, None, "")
 
       val source1 = new BuildSource() {
         def get : List[Build] = List(build1)

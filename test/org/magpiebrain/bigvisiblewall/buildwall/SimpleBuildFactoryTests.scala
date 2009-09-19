@@ -27,21 +27,21 @@ class SimpleBuildFactoryTests extends Specification with JUnit {
   "Build Factory" should {
     "Create a single build" in {
       val factory = new SimpleBuildFactory()
-      val data = List(("Project", FAILED, "http://url", ""))
-      factory.make(data).head must beEqualTo(new Build("Project", FAILED, Some("http://url")))
+      val data = List(("Project", FAILED, "http://url", "Building"))
+      factory.make(data).head must beEqualTo(new Build("Project", FAILED, Some("http://url"), "Building"))
     }
 
     "Create multiple builds" in {
       val factory = new SimpleBuildFactory()
       val data = List(
-       ("Project :: Step 1", FAILED, "http://url/1", ""),
-       ("Project :: Step 2", PASSED, "http://url/2", "")
+       ("Project :: Step 1", FAILED, "http://url/1", "Sleeping"),
+       ("Project :: Step 2", PASSED, "http://url/2", "Building")
       )
 
       factory.make(data) must containInOrder(
         List(
-          new Build("Project :: Step 1", FAILED, Some("http://url/1")),
-          new Build("Project :: Step 2", PASSED, Some("http://url/2"))
+          new Build("Project :: Step 1", FAILED, Some("http://url/1"), "Building"),
+          new Build("Project :: Step 2", PASSED, Some("http://url/2"), "Sleeping")
         )
       )
     }

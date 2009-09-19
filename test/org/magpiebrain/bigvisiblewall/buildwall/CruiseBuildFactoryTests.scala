@@ -32,8 +32,8 @@ class CruiseBuildFactoryTests extends Specification with JUnit {
       // Cruise sends a record for a build itself - e.g. Project :: Stage - as well as a
       // record for each step inside the stage - Project :: Stage :: Step1
       val data = List(
-        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1", ""),
-        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/stage1/step2", ""),
+        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1", "Sleeping"),
+        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/stage1/step2", "Compiling"),
         ("Project :: Stage 1", UNKNOWN, "http://url/stage1", "")
       )
 
@@ -48,8 +48,8 @@ class CruiseBuildFactoryTests extends Specification with JUnit {
       stage.getStatus must equalTo(UNKNOWN)
 
       stage.children must containAll (List(
-        new Build("Project :: Stage 1 :: Step 1", FAILED, Some("http://url/stage1/step1")),
-        new Build("Project :: Stage 1 :: Step 2", PASSED, Some("http://url/stage1/step2"))
+        new Build("Project :: Stage 1 :: Step 1", FAILED, Some("http://url/stage1/step1"), "Sleeping"),
+        new Build("Project :: Stage 1 :: Step 2", PASSED, Some("http://url/stage1/step2"), "Compiling")
       ))
     }
 
@@ -59,15 +59,15 @@ class CruiseBuildFactoryTests extends Specification with JUnit {
       // Cruise sends a record for a build itself - e.g. Project :: Stage - as well as a
       // record for each step inside the stage - Project :: Stage :: Step1
       val data = List(
-        ("Project 1 :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1", ""),
-        ("Project 1 :: Stage 1", UNKNOWN, "http://url/stage1", ""),
-        ("Project 2 :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1", ""),
-        ("Project 2 :: Stage 1", UNKNOWN, "http://url/stage1", "")
+        ("Project 1 :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1", "Sleeping"),
+        ("Project 1 :: Stage 1", UNKNOWN, "http://url/stage1", "Sleeping"),
+        ("Project 2 :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1", "Sleeping"),
+        ("Project 2 :: Stage 1", UNKNOWN, "http://url/stage1", "Sleeping")
       )
 
       factory.make(data) must containAll (List(
-        new Build("Project 1", UNKNOWN, None),
-        new Build("Project 2", UNKNOWN, None)
+        new Build("Project 1", UNKNOWN, None, ""),
+        new Build("Project 2", UNKNOWN, None, "")
       ))
     }
  
@@ -77,16 +77,16 @@ class CruiseBuildFactoryTests extends Specification with JUnit {
       // Cruise sends a record for a build itself - e.g. Project :: Stage - as well as a
       // record for each step inside the stage - Project :: Stage :: Step1
       val data = List(
-        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1", ""),
-        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/stage1/step2", ""),
-        ("Project :: Stage 1", UNKNOWN, "http://url/stage1", ""),
-        ("Project :: Stage 2 :: Step 1", PASSED, "http://url/stage2/step2", ""),
-        ("Project :: Stage 2", UNKNOWN, "http://url/stage2", "")
+        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1", "Sleeping"),
+        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/stage1/step2", "Sleeping"),
+        ("Project :: Stage 1", UNKNOWN, "http://url/stage1", "Building"),
+        ("Project :: Stage 2 :: Step 1", PASSED, "http://url/stage2/step2", "Sleeping"),
+        ("Project :: Stage 2", UNKNOWN, "http://url/stage2", "Sleeping")
       )
 
       factory.make(data) must containAll (List(
-        new Build("Project :: Stage 1", UNKNOWN, Some("http://url/stage1")),
-        new Build("Project :: Stage 2", UNKNOWN, Some("http://url/stage2"))
+        new Build("Project :: Stage 1", UNKNOWN, Some("http://url/stage1"), "Build"),
+        new Build("Project :: Stage 2", UNKNOWN, Some("http://url/stage2"), "Sleeping")
       ))
     }
     
@@ -96,17 +96,17 @@ class CruiseBuildFactoryTests extends Specification with JUnit {
       // Cruise sends a record for a build itself - e.g. Project :: Stage - as well as a
       // record for each step inside the stage - Project :: Stage :: Step1
       val data = List(
-        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1", ""),
-        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/stage1/step2", ""),
+        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1", "Building"),
+        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/stage1/step2", "Deploying"),
         ("Project :: Stage 1", UNKNOWN, "http://url/stage1", ""),
-        ("Project :: Stage 2 :: Step 1", PASSED, "http://url/stage2/step1", ""),
+        ("Project :: Stage 2 :: Step 1", PASSED, "http://url/stage2/step1", "Sleeping"),
         ("Project :: Stage 2", UNKNOWN, "http://url/stage2", "")
       )
 
       factory.make(data) must containAll (List(
-        new Build("Project :: Stage 1 :: Step 1", FAILED, Some("http://url/stage1/step1")),
-        new Build("Project :: Stage 1 :: Step 2", PASSED, Some("http://url/stage1/step2")),
-        new Build("Project :: Stage 2 :: Step 1", PASSED, Some("http://url/stage2/step1"))
+        new Build("Project :: Stage 1 :: Step 1", FAILED, Some("http://url/stage1/step1"), "Building"),
+        new Build("Project :: Stage 1 :: Step 2", PASSED, Some("http://url/stage1/step2"), "Deploying"),
+        new Build("Project :: Stage 2 :: Step 1", PASSED, Some("http://url/stage2/step1"), "Sleeping")
       ))
     }
   }

@@ -32,25 +32,25 @@ class CruiseProjectTests extends Specification with JUnit {
 
     "Have a status of unknown if any child build is unknown and there are no failures" in {
       val project = new CruiseProject("Project")
-      project.addChild(new Build("Child", UNKNOWN, None))
-      project.addChild(new Build("Child", PASSED, None))
+      project.addChild(new Build("Child", UNKNOWN, None, ""))
+      project.addChild(new Build("Child", PASSED, None, ""))
 
       project.getStatus must beEqualTo(UNKNOWN)
     }
 
     "Have a status of passed if all children have passed" in {
       val project = new CruiseProject("Project")
-      project.addChild(new Build("Child", PASSED, None))
-      project.addChild(new Build("Child", PASSED, None))
+      project.addChild(new Build("Child", PASSED, None, ""))
+      project.addChild(new Build("Child", PASSED, None, ""))
 
       project.getStatus must beEqualTo(PASSED)
     }
 
     "Have a status of failed if any child is failed" in {
      val project = new CruiseProject("Project")
-      project.addChild(new Build("Child", UNKNOWN, None))
-      project.addChild(new Build("Child", PASSED, None))
-      project.addChild(new Build("Child", FAILED, None))
+      project.addChild(new Build("Child", UNKNOWN, None, ""))
+      project.addChild(new Build("Child", PASSED, None, ""))
+      project.addChild(new Build("Child", FAILED, None, ""))
 
       project.getStatus must beEqualTo(FAILED)
     }
