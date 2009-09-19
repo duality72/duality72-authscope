@@ -6,3 +6,20 @@ li.build {
 .build {
 	font-size: 125%;
 }
+
+.project {
+	display: block;
+}
+
+.working {
+	padding-left: 30px !important;
+	margin-left: 10px;
+}
+
+.failed .working {
+	background: url(failed_spinner.gif) no-repeat 1px 15px !important;
+}
+
+.passed .working {
+	background: url(passing_spinner.gif) no-repeat 1px 15px !important;
+}
