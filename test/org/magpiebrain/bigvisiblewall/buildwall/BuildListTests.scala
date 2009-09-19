@@ -31,7 +31,21 @@ class BuildListTests extends Specification with JUnit {
           </li>
         </ul>
 
-      val build = new Build("My Super Project", PASSED, Some("http://mybuild"), "")
+      val build = new Build("My Super Project", PASSED, Some("http://mybuild"), "Sleeping")
+      val buildList = new BuildList(List(build), "")
+      buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml)
+    }
+
+
+    "Display HTML for a working build" in {
+      val expectedHtml =
+        <ul class="builds">
+          <li class="build passed">
+            <a class="project working" href="http://mybuild">My Super Project</a>
+          </li>
+        </ul>
+
+      val build = new Build("My Super Project", PASSED, Some("http://mybuild"), "Building")
       val buildList = new BuildList(List(build), "")
       buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml)
     }
@@ -44,7 +58,7 @@ class BuildListTests extends Specification with JUnit {
           </li>
         </ul>
 
-      val build = new Build("My Super Project", FAILED, Some("http://mybuild"), "")
+      val build = new Build("My Super Project", FAILED, Some("http://mybuild"), "Sleeping")
       val buildList = new BuildList(List(build), "")
       buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml)
     }
@@ -57,7 +71,7 @@ class BuildListTests extends Specification with JUnit {
           </li>
         </ul>
 
-      val build = new Build("My Super Project", UNKNOWN, Some("http://mybuild"), "")
+      val build = new Build("My Super Project", UNKNOWN, Some("http://mybuild"), "Sleeping")
       val buildList = new BuildList(List(build), "")
       buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml)
     }
@@ -74,9 +88,9 @@ class BuildListTests extends Specification with JUnit {
           </li>
         </ul>
 
-      val build = new Build("My Project :: Build", FAILED, None, "")
-      build.addChild(new Build("Step 1", FAILED, Some("http://mybuild/1"), ""))
-      build.addChild(new Build("Step 2", PASSED, Some("http://mybuild/2"), ""))
+      val build = new Build("My Project :: Build", FAILED, None, "Sleeping")
+      build.addChild(new Build("Step 1", FAILED, Some("http://mybuild/1"), "Sleeping"))
+      build.addChild(new Build("Step 2", PASSED, Some("http://mybuild/2"), "Sleeping"))
 
       val buildList = new BuildList(List(build), "")
       buildList.asHtml \ "body" \ "ul" must equalIgnoreSpace(expectedHtml) 
@@ -96,11 +110,11 @@ class BuildListTests extends Specification with JUnit {
       val expectedHtml =
             <table class="build passed">
               <tr valign="middle" align="center">
-                <td><span class="project">enterprisecorp-trunk :: build</span></td>
+                <td><span class="project working">enterprisecorp-trunk :: build</span></td>
               </tr>
             </table>
 
-      val buildList = new BuildList(List(new Build("enterprisecorp-trunk :: build", PASSED, None, "")), "single")
+      val buildList = new BuildList(List(new Build("enterprisecorp-trunk :: build", PASSED, None, "Building")), "single")
       buildList.asHtml \ "body" \\ "table" must equalIgnoreSpace(expectedHtml)
       buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-single.css", "/static/common.css"))
     }
@@ -136,7 +150,7 @@ class BuildListTests extends Specification with JUnit {
               </tr>
             </table>
 
-      val buildList = new BuildList(List(new Build("enterprisecorp-trunk :: build", PASSED, None, "")), "smart")
+      val buildList = new BuildList(List(new Build("enterprisecorp-trunk :: build", PASSED, None, "Sleeping")), "smart")
       buildList.asHtml \ "body" \\ "table" must equalIgnoreSpace(expectedHtml)
       buildList.asHtml \\ "link" \\ "@href" must containAll(List("/static/buildwall-single.css", "/static/common.css"))
     }

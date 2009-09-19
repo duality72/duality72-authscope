@@ -78,9 +78,10 @@ class BuildList(val builds: List[Build], val displayType: String) {
 
   private def linkToBuild(build: Build): Elem = {
     //TODO: Should deal more elegantly with the optionality with the URL
-    var buildLink = <a class="project" href={ build.urlToBuild.getOrElse("") }>{ build.name }</a>
+    val className = "project" + (if(build.working) " working" else "")
+    var buildLink = <a class={ className } href={ build.urlToBuild.getOrElse("") }>{ build.name }</a>
     if (!build.urlToBuild.isDefined) {
-      buildLink = <span class="project">{ build.name }</span>
+      buildLink = <span class={ className }>{ build.name }</span>
     }
     return buildLink
   }
