@@ -32,7 +32,7 @@ class CcTrayFeedParserTests extends Specification with JUnit {
         </Projects>
 
       val builds = new CcTrayFeedParser().parse(exampleXml)
-      builds must containInOrder( List(("My Super Project", PASSED, "http://mysuperbuildmachine")) )
+      builds must containInOrder( List(("My Super Project", PASSED, "http://mysuperbuildmachine", "Sleeping")) )
     }
 
     "Parse single failing build" in {
@@ -44,7 +44,7 @@ class CcTrayFeedParserTests extends Specification with JUnit {
         </Projects>
 
       val builds = new CcTrayFeedParser().parse(exampleXml)
-      builds must containInOrder( List(("My Super Project", FAILED, "http://mysuperbuildmachine")) )
+      builds must containInOrder( List(("My Super Project", FAILED, "http://mysuperbuildmachine", "Sleeping")) )
     }
 
     "Parse multiple builds for multiple projects" in {
@@ -53,7 +53,7 @@ class CcTrayFeedParserTests extends Specification with JUnit {
           <Project name="Project 1" activity="Sleeping"
             lastBuildStatus="Failure" lastBuildLabel="3" lastBuildTime="2009-07-27T15:03:33"
             webUrl="http://mysuperbuildmachine/1" />
-          <Project name="Project 2" activity="Sleeping"
+          <Project name="Project 2" activity="Building"
             lastBuildStatus="Success" lastBuildLabel="3" lastBuildTime="2009-07-27T15:03:33"
             webUrl="http://mysuperbuildmachine/2" />
         </Projects>
@@ -62,8 +62,8 @@ class CcTrayFeedParserTests extends Specification with JUnit {
 
       builds must containInOrder(
         List(
-          ("Project 1", FAILED, "http://mysuperbuildmachine/1"),
-          ("Project 2", PASSED, "http://mysuperbuildmachine/2") )
+          ("Project 1", FAILED, "http://mysuperbuildmachine/1", "Sleeping"),
+          ("Project 2", PASSED, "http://mysuperbuildmachine/2", "Building") )
         )
      }
   }

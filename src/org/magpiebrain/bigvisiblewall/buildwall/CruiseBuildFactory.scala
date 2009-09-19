@@ -24,7 +24,7 @@ import collection.mutable.{ArrayBuffer, HashMap}
  */
 class CruiseBuildFactory(val depth: Int) extends BuildFactory {
 
-  def make(data: List[Tuple3[String, BuildStatus, String]]): List[Build] = {
+  def make(data: List[Tuple4[String, BuildStatus, String, String]]): List[Build] = {
     //Sort the list so we find the root nodes first
     val sortedEntries = data.sort((d1, d2) => (d1._1.split(" :: ").length < d2._1.split(" :: ").length))
     val builds = new HashMap[String, Build]

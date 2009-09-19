@@ -25,10 +25,10 @@ import collection.mutable.HashMap
 
 class SimpleBuildFactory extends BuildFactory {
 
-  def make(data: List[Tuple3[String, BuildStatus, String]]): List[Build] = {
+  def make(data: List[Tuple4[String, BuildStatus, String, String]]): List[Build] = {
       return data map toBuild
   }
 
-  private def toBuild(data: Tuple3[String, BuildStatus, String]) = new Build(data._1, data._2, Some(data._3))
+  private def toBuild(data: Tuple4[String, BuildStatus, String, String]) = new Build(data._1, data._2, Some(data._3))
 
 }

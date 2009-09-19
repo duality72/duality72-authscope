@@ -32,9 +32,9 @@ class CruiseBuildFactoryTests extends Specification with JUnit {
       // Cruise sends a record for a build itself - e.g. Project :: Stage - as well as a
       // record for each step inside the stage - Project :: Stage :: Step1
       val data = List(
-        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1"),
-        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/stage1/step2"),
-        ("Project :: Stage 1", UNKNOWN, "http://url/stage1")
+        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1", ""),
+        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/stage1/step2", ""),
+        ("Project :: Stage 1", UNKNOWN, "http://url/stage1", "")
       )
 
       val build = factory.make(data).head
@@ -59,10 +59,10 @@ class CruiseBuildFactoryTests extends Specification with JUnit {
       // Cruise sends a record for a build itself - e.g. Project :: Stage - as well as a
       // record for each step inside the stage - Project :: Stage :: Step1
       val data = List(
-        ("Project 1 :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1"),
-        ("Project 1 :: Stage 1", UNKNOWN, "http://url/stage1"),
-        ("Project 2 :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1"),
-        ("Project 2 :: Stage 1", UNKNOWN, "http://url/stage1")
+        ("Project 1 :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1", ""),
+        ("Project 1 :: Stage 1", UNKNOWN, "http://url/stage1", ""),
+        ("Project 2 :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1", ""),
+        ("Project 2 :: Stage 1", UNKNOWN, "http://url/stage1", "")
       )
 
       factory.make(data) must containAll (List(
@@ -77,11 +77,11 @@ class CruiseBuildFactoryTests extends Specification with JUnit {
       // Cruise sends a record for a build itself - e.g. Project :: Stage - as well as a
       // record for each step inside the stage - Project :: Stage :: Step1
       val data = List(
-        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1"),
-        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/stage1/step2"),
-        ("Project :: Stage 1", UNKNOWN, "http://url/stage1"),
-        ("Project :: Stage 2 :: Step 1", PASSED, "http://url/stage2/step2"),
-        ("Project :: Stage 2", UNKNOWN, "http://url/stage2")
+        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1", ""),
+        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/stage1/step2", ""),
+        ("Project :: Stage 1", UNKNOWN, "http://url/stage1", ""),
+        ("Project :: Stage 2 :: Step 1", PASSED, "http://url/stage2/step2", ""),
+        ("Project :: Stage 2", UNKNOWN, "http://url/stage2", "")
       )
 
       factory.make(data) must containAll (List(
@@ -96,11 +96,11 @@ class CruiseBuildFactoryTests extends Specification with JUnit {
       // Cruise sends a record for a build itself - e.g. Project :: Stage - as well as a
       // record for each step inside the stage - Project :: Stage :: Step1
       val data = List(
-        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1"),
-        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/stage1/step2"),
-        ("Project :: Stage 1", UNKNOWN, "http://url/stage1"),
-        ("Project :: Stage 2 :: Step 1", PASSED, "http://url/stage2/step1"),
-        ("Project :: Stage 2", UNKNOWN, "http://url/stage2")
+        ("Project :: Stage 1 :: Step 1", FAILED, "http://url/stage1/step1", ""),
+        ("Project :: Stage 1 :: Step 2", PASSED, "http://url/stage1/step2", ""),
+        ("Project :: Stage 1", UNKNOWN, "http://url/stage1", ""),
+        ("Project :: Stage 2 :: Step 1", PASSED, "http://url/stage2/step1", ""),
+        ("Project :: Stage 2", UNKNOWN, "http://url/stage2", "")
       )
 
       factory.make(data) must containAll (List(

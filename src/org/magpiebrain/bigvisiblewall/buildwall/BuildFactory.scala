@@ -21,5 +21,5 @@ package org.magpiebrain.bigvisiblewall.buildwall
  */
 
 trait BuildFactory {
-  def make(data: List[Tuple3[String, BuildStatus, String]]): List[Build]
+  def make(data: List[Tuple4[String, BuildStatus, String, String]]): List[Build]
 }
