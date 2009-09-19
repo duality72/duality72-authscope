@@ -55,28 +55,29 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
       val queryString = new QueryString(queryStringAsString)
 
       if (target.equals("/cardWall")) {
-          //TODO Pull out Int from query string...
-          val limit = queryString.getOrElse("limit", "4")
-          ok(response, new CardList(projectRepository.cards.slice(0, limit.toInt)).asHtml)
+        //TODO Pull out Int from query string...
+        val limit = queryString.getOrElse("limit", "4")
+        ok(response, new CardList(projectRepository.cards.slice(0, limit.toInt)).asHtml)
       } else if (target.startsWith("/static/")) {
         val staticFilename = target.drop(8)
         okString(response, new StaticFile(staticFileDir, staticFilename).contents)
       } else if (target.equals("/")) {
-          //TODO pull URL from query string
-          val sourceUrls = queryString.getAllOrElse("source", List()) map (url => URLDecoder.decode(url))
-          val sources = sourceUrls map ( url => new CcTrayBuildSource(url, webClient))
+        //TODO pull URL from query string
+        val sourceUrls = queryString.getAllOrElse("source", List()) map (url => URLDecoder.decode(url))
+        val sources = sourceUrls map ( url => new CcTrayBuildSource(url, webClient))
 
-          val cruiseSources = queryString.getAllOrElse("cruiseSource", List()) map (v => createCruiseSourceFromParam(webClient, v))
+        val cruiseSources = queryString.getAllOrElse("cruiseSource", List()) map (v => createCruiseSourceFromParam(webClient, v))
 
-          val displayType = queryString.getOrElse("display", "smart")
+        val displayType = queryString.getOrElse("display", "smart")
 
-          val projectPrefixes = queryString.getAllOrElse("prefix", List())
-          var buildFactory = new SimpleBuildFactory()
-        
-          val html = new BuildWall().render(new CompositeBuildSource(List() ++ sources ++ cruiseSources), projectPrefixes, buildFactory, displayType)
-          ok(response, html)
+        val projectPrefixes = queryString.getAllOrElse("prefix", List())
+        var buildFactory = new SimpleBuildFactory()
+
+        val source = new CompositeBuildSource(List() ++ sources ++ cruiseSources) with ByNameSorting
+        val html = new BuildWall().render(source, projectPrefixes, buildFactory, displayType)
+        ok(response, html)
       } else {
-          notFound(response, <h1>Not Found</h1>)
+        notFound(response, <h1>Not Found</h1>)
       }
     } catch {
       case e => {
