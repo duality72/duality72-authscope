@@ -21,18 +21,9 @@ import scala.xml.Node
 
 class BuildWall() {
 
-   def render(source: BuildSource, prefixes: Seq[String], buildFactory: BuildFactory, displayType: String) : Node = {
+   def render(source: BuildSource, buildFactory: BuildFactory, displayType: String) : Node = {
      var builds = source.get
      builds = builds.sort((b1, b2) => (b1.name compareTo b2.name) < 0)
-
-      if (!prefixes.isEmpty) {
-       var filteredBuids = HashSet[Build]()
-       for (prefix <- prefixes) {
-         filteredBuids ++= builds.filter(_.name.startsWith(prefix))
-       }
-       builds = filteredBuids.toList
-     }
-
      return new BuildList(builds, displayType).asHtml
    }
 
