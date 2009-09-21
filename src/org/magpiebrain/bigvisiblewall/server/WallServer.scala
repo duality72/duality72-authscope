@@ -63,11 +63,10 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
         okString(response, new StaticFile(staticFileDir, staticFilename).contents)
       } else if (target.equals("/")) {
         //TODO pull URL from query string
-        val sourceUrls = queryString.getAllOrElse("source", List()) map (url => URLDecoder.decode(url))
-        val sources = sourceUrls map ( url => new CcTrayBuildSource(url, webClient))
+        val sources = queryString.getAllOrElse("source", List()) map (url => new CcTrayBuildSource(URLDecoder.decode(url), webClient))
         val projectPrefixes = queryString.getAllOrElse("prefix", List())
 
-        val cruiseSources = queryString.getAllOrElse("cruiseSource", List()) map (v => createCruiseSourceFromParam(webClient, v))
+        val cruiseSources = queryString.getAllOrElse("cruiseSource", List()) map (v => cruiseSource(webClient, v))
         val source = new PrefixFilteringBuildSource(new CompositeBuildSource(List() ++ sources ++ cruiseSources), projectPrefixes) with ByNameSorting
 
         val displayType = queryString.getOrElse("display", "smart")
@@ -84,7 +83,7 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
     }
   }
 
-  def createCruiseSourceFromParam(client: WebClient, value: String) : CruiseCcTrayBuildSource = {
+  private def cruiseSource(client: WebClient, value: String) : CruiseCcTrayBuildSource = {
     if (!value.contains(",")) {
       return new CruiseCcTrayBuildSource(URLDecoder.decode(value), client, 1);
     }
