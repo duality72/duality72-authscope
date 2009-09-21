@@ -34,7 +34,7 @@ class BuildWallTests extends Specification with JUnit {
       }
 
       val wall = new BuildWall()
-      val buildWallHtml = wall.render(buildSource, new SimpleBuildFactory(), "")
+      val buildWallHtml = wall.render(buildSource, "")
 
       val buildNames = buildNamesInElem(buildWallHtml)
       buildNames must containInOrder(List("A", "B", "C"))
@@ -48,7 +48,7 @@ class BuildWallTests extends Specification with JUnit {
       }
 
       val wall = new BuildWall()
-      val buildWallHtml = wall.render(buildSource, new SimpleBuildFactory(), "")
+      val buildWallHtml = wall.render(buildSource, "")
 
       val buildNames = buildNamesInElem(buildWallHtml)
       buildNames must haveSize(2)

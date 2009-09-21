@@ -21,7 +21,7 @@ import scala.xml.Node
 
 class BuildWall() {
 
-   def render(source: BuildSource, buildFactory: BuildFactory, displayType: String) : Node = {
+   def render(source: BuildSource, displayType: String) : Node = {
      var builds = source.get
      builds = builds.sort((b1, b2) => (b1.name compareTo b2.name) < 0)
      return new BuildList(builds, displayType).asHtml
