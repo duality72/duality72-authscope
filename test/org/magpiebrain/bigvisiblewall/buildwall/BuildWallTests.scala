@@ -40,23 +40,7 @@ class BuildWallTests extends Specification with JUnit {
       buildNames must containInOrder(List("A", "B", "C"))
     }
 
-    "Filter build results by project name prefix" in {
-       val buildSource = new BuildSource() {
-        def get : List[Build] = {
-          List(new Build("Project 1 :: Some Stuff", UNKNOWN, None, ""), new Build("Project 2 :: Some Other Stuff", UNKNOWN, None, ""))
-        }
-      }
-
-      val wall = new BuildWall()
-      val buildWallHtml = wall.render(buildSource, List("Project 1"), new SimpleBuildFactory(), "")
-
-
-      val buildNames = buildNamesInElem(buildWallHtml)
-      buildNames must haveSize(1)
-      buildNames(0) must equalTo("Project 1 :: Some Stuff")
-    }
-
-    "Show all builds when no prefix is specified" in {
+    "Render all builds" in {
       val buildSource = new BuildSource() {
         def get : List[Build] = {
           List(new Build("Project 1 :: Some Stuff", UNKNOWN, None, ""), new Build("Project 2 :: Some Other Stuff", UNKNOWN, None, ""))
@@ -69,24 +53,6 @@ class BuildWallTests extends Specification with JUnit {
       val buildNames = buildNamesInElem(buildWallHtml)
       buildNames must haveSize(2)
       buildNames must haveTheSameElementsAs(List("Project 1 :: Some Stuff", "Project 2 :: Some Other Stuff"))
-    }
-
-    "Can filter results using multiple prefixes" in {
-      val buildSource = new BuildSource() {
-        def get : List[Build] = {
-          List(
-            new Build("Project 1 :: Some Stuff", UNKNOWN, None, ""),
-            new Build("Project 2 :: Some Other Stuff", UNKNOWN, None, ""),
-            new Build("Project 3 :: Things", UNKNOWN, None, ""))
-        }
-      }
-
-      val wall = new BuildWall()
-      val buildWallHtml = wall.render(buildSource, List("Project 1", "Project 3"), new SimpleBuildFactory(), "")
-
-      val buildNames = buildNamesInElem(buildWallHtml)
-      buildNames must haveSize(2)
-      buildNames must haveTheSameElementsAs(List("Project 1 :: Some Stuff", "Project 3 :: Things"))
     }
   }
 

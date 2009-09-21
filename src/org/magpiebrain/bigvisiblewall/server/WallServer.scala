@@ -73,7 +73,7 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
         val projectPrefixes = queryString.getAllOrElse("prefix", List())
         var buildFactory = new SimpleBuildFactory()
 
-        val source = new CompositeBuildSource(List() ++ sources ++ cruiseSources) with ByNameSorting
+        val source = new PrefixFilteringBuildSource(new CompositeBuildSource(List() ++ sources ++ cruiseSources), projectPrefixes) with ByNameSorting
         val html = new BuildWall().render(source, projectPrefixes, buildFactory, displayType)
         ok(response, html)
       } else {
