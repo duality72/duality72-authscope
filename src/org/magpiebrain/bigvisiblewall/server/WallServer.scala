@@ -65,10 +65,9 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
         //TODO pull URL from query string
         val sources = queryString.getAllOrElse("source", List()) map (url => new CcTrayBuildSource(URLDecoder.decode(url), webClient))
         val projectPrefixes = queryString.getAllOrElse("prefix", List())
-
         val cruiseSources = queryString.getAllOrElse("cruiseSource", List()) map (v => cruiseSource(webClient, v))
-        val source = new PrefixFilteringBuildSource(new CompositeBuildSource(List() ++ sources ++ cruiseSources), projectPrefixes) with ByNameSorting
 
+        val source = new PrefixFilteringBuildSource(new CompositeBuildSource(List() ++ sources ++ cruiseSources), projectPrefixes) with ByNameSorting
         val displayType = queryString.getOrElse("display", "smart")
 
         ok(response, new BuildWall().render(source, displayType))
