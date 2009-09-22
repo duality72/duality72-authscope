@@ -16,9 +16,6 @@
 
 package org.magpiebrain.bigvisiblewall.buildwall
 
-
-import collection.mutable.HashMap
-
 /**
  * @author Sam Newman (sam.newman@gmail.com)
  */
@@ -29,6 +26,6 @@ class SimpleBuildFactory extends BuildFactory {
       return data map toBuild
   }
 
-  private def toBuild(data: Tuple4[String, BuildStatus, String, String]) = new Build(data._1, data._2, Some(data._3), "")
+  private def toBuild(data: Tuple4[String, BuildStatus, String, String]) = new Build(data._1, data._2, Some(data._3), data._4)
 
 }

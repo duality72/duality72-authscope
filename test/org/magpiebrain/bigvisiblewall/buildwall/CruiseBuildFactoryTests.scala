@@ -85,7 +85,7 @@ class CruiseBuildFactoryTests extends Specification with JUnit {
       )
 
       factory.make(data) must containAll (List(
-        new Build("Project :: Stage 1", UNKNOWN, Some("http://url/stage1"), "Build"),
+        new Build("Project :: Stage 1", UNKNOWN, Some("http://url/stage1"), "Building"),
         new Build("Project :: Stage 2", UNKNOWN, Some("http://url/stage2"), "Sleeping")
       ))
     }

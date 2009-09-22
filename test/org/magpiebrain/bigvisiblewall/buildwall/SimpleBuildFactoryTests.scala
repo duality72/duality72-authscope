@@ -40,8 +40,8 @@ class SimpleBuildFactoryTests extends Specification with JUnit {
 
       factory.make(data) must containInOrder(
         List(
-          new Build("Project :: Step 1", FAILED, Some("http://url/1"), "Building"),
-          new Build("Project :: Step 2", PASSED, Some("http://url/2"), "Sleeping")
+          new Build("Project :: Step 1", FAILED, Some("http://url/1"), "Sleeping"),
+          new Build("Project :: Step 2", PASSED, Some("http://url/2"), "Building")
         )
       )
     }

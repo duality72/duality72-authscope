@@ -35,14 +35,15 @@ class Build(val name: String, private val status: BuildStatus, val urlToBuild: O
   def working : Boolean = !currentActivity.equals("Sleeping")
 
   override def toString(): String = {
-    return "Name:" + name + " Status:" + status + " URL:" + urlToBuild
+    return "Name:" + name + " Status:" + status + " URL:" + urlToBuild + " CurrentActivity:" + currentActivity
   }
 
   override def equals(other : Any) : Boolean = other match {
     case that : Build => (
       this.name == that.name &&
       this.status == that.status &&
-      this.urlToBuild == that.urlToBuild
+      this.urlToBuild == that.urlToBuild &&
+      this.currentActivity == that.currentActivity
     )
     case _ => false
   }
