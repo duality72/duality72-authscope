@@ -20,6 +20,8 @@ import buildwall._
 import cardwall.repository.{ProjectRepository}
 import cardwall.web.CardList
 import common.WebClient
+import eclipse.jetty.util.resource.Resource
+import java.io.File
 import java.net.URLDecoder
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
 import org.eclipse.jetty.server.handler.AbstractHandler
@@ -60,7 +62,11 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
         ok(response, new CardList(projectRepository.cards.slice(0, limit.toInt)).asHtml)
       } else if (target.startsWith("/static/")) {
         val staticFilename = target.drop(8)
-        okString(response, new StaticFile(staticFileDir, staticFilename).contents)
+//        okString(response, new StaticFile(staticFileDir, staticFilename).contents)
+
+        val resource = Resource.newResource(staticFileDir + File.separator + staticFilename)
+        resource.writeTo(response.getOutputStream, 0, resource.length)
+        response.setStatus(HttpServletResponse.SC_OK)
       } else if (target.equals("/")) {
         //TODO pull URL from query string
         val sources = queryString.getAllOrElse("source", List()) map (url => new CcTrayBuildSource(URLDecoder.decode(url), webClient))
