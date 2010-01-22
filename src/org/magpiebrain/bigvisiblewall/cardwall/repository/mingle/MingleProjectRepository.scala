@@ -15,8 +15,9 @@
  */
 package org.magpiebrain.bigvisiblewall.cardwall.repository.mingle
 
-import common.WebClient
-import model.{Card, User}
+import org.magpiebrain.bigvisiblewall.common.WebClient
+import org.magpiebrain.bigvisiblewall.cardwall.model.{Card, User}
+import org.magpiebrain.bigvisiblewall.cardwall.repository.ProjectRepository
 import scala.xml.XML
 
 class MingleProjectRepository(val mingleUrl : String, val project : String, val client : WebClient) extends ProjectRepository {

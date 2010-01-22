@@ -83,7 +83,7 @@ private class UrlDispatcher(val webClient: WebClient, val projectRepository: Pro
     } catch {
       case e => {
         e.printStackTrace
-        error(response, <html><h1>Error</h1><pre>{e}</pre></html>)
+        error(response, <html><head> <meta http-equiv="refresh" content="60"></meta></head><h1>Error</h1><pre>{e}</pre></html>)
       }
     }
   }
