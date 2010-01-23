@@ -16,11 +16,11 @@
 package org.magpiebrain.bigvisiblewall.server
 
 
-import buildwall._
-import cardwall.repository.{ProjectRepository}
-import cardwall.web.CardList
-import common.WebClient
-import eclipse.jetty.util.resource.Resource
+import org.magpiebrain.bigvisiblewall.buildwall._
+import org.magpiebrain.bigvisiblewall.cardwall.repository.{ProjectRepository}
+import org.magpiebrain.bigvisiblewall.cardwall.web.CardList
+import org.magpiebrain.bigvisiblewall.common.WebClient
+import org.eclipse.jetty.util.resource.Resource
 import java.io.File
 import java.net.URLDecoder
 import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
