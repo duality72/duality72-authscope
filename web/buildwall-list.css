@@ -1,7 +1,7 @@
 .build {
 	font-size: 275%;
+	height: 1.5em !important;
 }
-
 
 .working {
 	padding-left: 40px;

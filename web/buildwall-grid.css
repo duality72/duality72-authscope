@@ -1,6 +1,7 @@
 li.build {
 	float:  left;
-	width: 300px;	
+	width: 15em;	
+	height: 3em !important;
 }
 
 .build {
