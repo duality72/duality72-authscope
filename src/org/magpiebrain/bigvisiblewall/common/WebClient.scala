@@ -53,7 +53,7 @@ class CommonsWebClient extends WebClient {
 
   def setBasicCredentials(username: String, password: String, host: String) {
     val defaultcreds = new UsernamePasswordCredentials(username, password);
-    httpClient.getState().setCredentials(new AuthScope(host, 80, AuthScope.ANY_REALM), defaultcreds);
+    httpClient.getState().setCredentials(AuthScope.ANY, defaultcreds);
   }
 
    /*
